@@ -34,7 +34,7 @@ describe( `lib-resource-path`,
 				it( `should update a single resource`,
 					async function ()
 					{
-						App.libResourcePath.Update( Resources, '.$.values.2', { value: 42, done: true } );
+						LIB_RESOURCE_PATH.Update( Resources, '.$.values.2', { value: 42, done: true } );
 						LIB_ASSERT.deepStrictEqual( Resources,
 							{
 								".$": { label: 'root', root: '.$' },

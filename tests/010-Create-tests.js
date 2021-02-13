@@ -28,7 +28,7 @@ describe( `lib-resource-path Tests`,
 				it( `should create a resource from a missing object info`,
 					async function ()
 					{
-						App.libResourcePath.Create( Resources, '.$' );
+						LIB_RESOURCE_PATH.Create( Resources, '.$' );
 						LIB_ASSERT.deepStrictEqual( Resources, { ".$": {} } );
 						return;
 					} );
@@ -37,7 +37,7 @@ describe( `lib-resource-path Tests`,
 				it( `should create a resource from an empty object`,
 					async function ()
 					{
-						App.libResourcePath.Create( Resources, '.$', {} );
+						LIB_RESOURCE_PATH.Create( Resources, '.$', {} );
 						LIB_ASSERT.deepStrictEqual( Resources, { ".$": {} } );
 						return;
 					} );
@@ -46,7 +46,7 @@ describe( `lib-resource-path Tests`,
 				it( `should create a resource from a simple object`,
 					async function ()
 					{
-						App.libResourcePath.Create( Resources, '.$', { value: true } );
+						LIB_RESOURCE_PATH.Create( Resources, '.$', { value: true } );
 						LIB_ASSERT.deepStrictEqual( Resources, { ".$": { value: true } } );
 						return;
 					} );
@@ -55,8 +55,8 @@ describe( `lib-resource-path Tests`,
 				it( `should create multiple resources`,
 					async function ()
 					{
-						App.libResourcePath.Create( Resources, '.$', { label: 'root', value: true } );
-						App.libResourcePath.Create( Resources, '.$.test', { label: 'test' } );
+						LIB_RESOURCE_PATH.Create( Resources, '.$', { label: 'root', value: true } );
+						LIB_RESOURCE_PATH.Create( Resources, '.$.test', { label: 'test' } );
 						LIB_ASSERT.deepStrictEqual( Resources,
 							{
 								".$": { label: 'root', value: true },
@@ -70,7 +70,7 @@ describe( `lib-resource-path Tests`,
 				it( `should not create missing resources`,
 					async function ()
 					{
-						App.libResourcePath.Create( Resources, '.$.test', { label: 'test', value: true } );
+						LIB_RESOURCE_PATH.Create( Resources, '.$.test', { label: 'test', value: true } );
 						LIB_ASSERT.deepStrictEqual( Resources,
 							{
 								".$.test": { label: 'test', value: true },
@@ -82,7 +82,7 @@ describe( `lib-resource-path Tests`,
 				it( `should not create multiple missing resources`,
 					async function ()
 					{
-						App.libResourcePath.Create( Resources, '.$.test.value', { label: 'test', value: true } );
+						LIB_RESOURCE_PATH.Create( Resources, '.$.test.value', { label: 'test', value: true } );
 						LIB_ASSERT.deepStrictEqual( Resources,
 							{
 								".$.test.value": { label: 'test', value: true },

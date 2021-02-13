@@ -34,7 +34,7 @@ describe( `lib-resource-path`,
 				it( `should move a resource`,
 					async function ()
 					{
-						App.libResourcePath.Moveto( Resources, '.$.test', '.new.test' );
+						LIB_RESOURCE_PATH.Moveto( Resources, '.$.test', '.new.test' );
 						LIB_ASSERT.deepStrictEqual( Resources,
 							{
 								".$": { label: 'root', root: '.$' },
@@ -50,7 +50,7 @@ describe( `lib-resource-path`,
 				it( `should move child resources`,
 					async function ()
 					{
-						App.libResourcePath.Moveto( Resources, '.$.values', '.$.new' );
+						LIB_RESOURCE_PATH.Moveto( Resources, '.$.values', '.$.new' );
 						LIB_ASSERT.deepStrictEqual( Resources,
 							{
 								".$": { label: 'root', root: '.$' },
@@ -66,7 +66,7 @@ describe( `lib-resource-path`,
 				it( `should move root resources`,
 					async function ()
 					{
-						App.libResourcePath.Moveto( Resources, '.$', '.new' );
+						LIB_RESOURCE_PATH.Moveto( Resources, '.$', '.new' );
 						LIB_ASSERT.deepStrictEqual( Resources,
 							{
 								".new": { label: 'root', root: '.$' },
@@ -82,7 +82,7 @@ describe( `lib-resource-path`,
 				it( `should overwrite existing resources`,
 					async function ()
 					{
-						App.libResourcePath.Moveto( Resources, '.$.values.2', '.$.values.3' );
+						LIB_RESOURCE_PATH.Moveto( Resources, '.$.values.2', '.$.values.3' );
 						LIB_ASSERT.deepStrictEqual( Resources,
 							{
 								".$": { label: 'root', root: '.$' },
@@ -97,7 +97,7 @@ describe( `lib-resource-path`,
 				it( `should rename the delimiter`,
 					async function ()
 					{
-						App.libResourcePath.Moveto( Resources, '.$', '/$' );
+						LIB_RESOURCE_PATH.Moveto( Resources, '.$', '/$' );
 						LIB_ASSERT.deepStrictEqual( Resources,
 							{
 								"/$": { label: 'root', root: '.$' },

@@ -34,7 +34,7 @@ describe( `lib-resource-path`,
 				it( `should retrieve root resource info`,
 					async function ()
 					{
-						let resource = App.libResourcePath.Select( Resources, '' );
+						let resource = LIB_RESOURCE_PATH.Select( Resources, '' );
 						LIB_ASSERT.deepStrictEqual( resource,
 							{
 								parent: null,
@@ -50,7 +50,7 @@ describe( `lib-resource-path`,
 				it( `should retrieve '.$'`,
 					async function ()
 					{
-						let resource = App.libResourcePath.Select( Resources, '.$' );
+						let resource = LIB_RESOURCE_PATH.Select( Resources, '.$' );
 						LIB_ASSERT.deepStrictEqual( resource,
 							{
 								parent: '',
@@ -66,7 +66,7 @@ describe( `lib-resource-path`,
 				it( `should retrieve '.$.test'`,
 					async function ()
 					{
-						let resource = App.libResourcePath.Select( Resources, '.$.test' );
+						let resource = LIB_RESOURCE_PATH.Select( Resources, '.$.test' );
 						LIB_ASSERT.deepStrictEqual( resource,
 							{
 								parent: '.$',
@@ -82,7 +82,7 @@ describe( `lib-resource-path`,
 				it( `should retrieve '.$.values'`,
 					async function ()
 					{
-						let resource = App.libResourcePath.Select( Resources, '.$.values' );
+						let resource = LIB_RESOURCE_PATH.Select( Resources, '.$.values' );
 						LIB_ASSERT.deepStrictEqual( resource,
 							{
 								parent: '.$',
@@ -98,7 +98,7 @@ describe( `lib-resource-path`,
 				it( `should retrieve '.$.values.1'`,
 					async function ()
 					{
-						let resource = App.libResourcePath.Select( Resources, '.$.values.1' );
+						let resource = LIB_RESOURCE_PATH.Select( Resources, '.$.values.1' );
 						LIB_ASSERT.deepStrictEqual( resource,
 							{
 								parent: '.$.values',
@@ -114,7 +114,7 @@ describe( `lib-resource-path`,
 				it( `should retrieve '.$.values.2'`,
 					async function ()
 					{
-						let resource = App.libResourcePath.Select( Resources, '.$.values.2' );
+						let resource = LIB_RESOURCE_PATH.Select( Resources, '.$.values.2' );
 						LIB_ASSERT.deepStrictEqual( resource,
 							{
 								parent: '.$.values',
@@ -130,7 +130,7 @@ describe( `lib-resource-path`,
 				it( `should retrieve '.$.values.3'`,
 					async function ()
 					{
-						let resource = App.libResourcePath.Select( Resources, '.$.values.3' );
+						let resource = LIB_RESOURCE_PATH.Select( Resources, '.$.values.3' );
 						LIB_ASSERT.deepStrictEqual( resource,
 							{
 								parent: '.$.values',

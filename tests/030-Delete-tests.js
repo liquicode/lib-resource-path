@@ -34,7 +34,7 @@ describe( `lib-resource-path`,
 				it( `should remove a single resource`,
 					async function ()
 					{
-						App.libResourcePath.Delete( Resources, '.$.values.2' );
+						LIB_RESOURCE_PATH.Delete( Resources, '.$.values.2' );
 						LIB_ASSERT.deepStrictEqual( Resources,
 							{
 								".$": { label: 'root', root: '.$' },
@@ -49,7 +49,7 @@ describe( `lib-resource-path`,
 				it( `should remove a child resource`,
 					async function ()
 					{
-						App.libResourcePath.Delete( Resources, '.$.values' );
+						LIB_RESOURCE_PATH.Delete( Resources, '.$.values' );
 						LIB_ASSERT.deepStrictEqual( Resources,
 							{
 								".$": { label: 'root', root: '.$' },
@@ -62,7 +62,7 @@ describe( `lib-resource-path`,
 				it( `should do nothing for a non-existant resource`,
 					async function ()
 					{
-						App.libResourcePath.Delete( Resources, 'doesnt.exist' );
+						LIB_RESOURCE_PATH.Delete( Resources, 'doesnt.exist' );
 						LIB_ASSERT.deepStrictEqual( Resources,
 							{
 								".$": { label: 'root', root: '.$' },

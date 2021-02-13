@@ -34,7 +34,7 @@ describe( `lib-resource-path`,
 				it( `should copy a resource`,
 					async function ()
 					{
-						App.libResourcePath.Copyto( Resources, '.$.test', '.new.test' );
+						LIB_RESOURCE_PATH.Copyto( Resources, '.$.test', '.new.test' );
 						LIB_ASSERT.deepStrictEqual( Resources,
 							{
 								".$": { label: 'root', root: '.$' },
@@ -51,7 +51,7 @@ describe( `lib-resource-path`,
 				it( `should copy child resources`,
 					async function ()
 					{
-						App.libResourcePath.Copyto( Resources, '.$.values', '.$.new' );
+						LIB_RESOURCE_PATH.Copyto( Resources, '.$.values', '.$.new' );
 						LIB_ASSERT.deepStrictEqual( Resources,
 							{
 								".$": { label: 'root', root: '.$' },
@@ -70,7 +70,7 @@ describe( `lib-resource-path`,
 				it( `should copy root resources`,
 					async function ()
 					{
-						App.libResourcePath.Copyto( Resources, '.$', '.new' );
+						LIB_RESOURCE_PATH.Copyto( Resources, '.$', '.new' );
 						LIB_ASSERT.deepStrictEqual( Resources,
 							{
 								".$": { label: 'root', root: '.$' },
@@ -91,7 +91,7 @@ describe( `lib-resource-path`,
 				it( `should overwrite existing resources`,
 					async function ()
 					{
-						App.libResourcePath.Copyto( Resources, '.$.values.2', '.$.values.3' );
+						LIB_RESOURCE_PATH.Copyto( Resources, '.$.values.2', '.$.values.3' );
 						LIB_ASSERT.deepStrictEqual( Resources,
 							{
 								".$": { label: 'root', root: '.$' },
