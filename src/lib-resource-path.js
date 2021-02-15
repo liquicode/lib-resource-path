@@ -148,8 +148,8 @@ function Select( Resources, Path )
 	{
 		parent: '',
 		name: '',
-		resource_info: {},
-		inherited_info: {},
+		info: {},
+		resource: {},
 		children: [],
 	};
 
@@ -158,8 +158,8 @@ function Select( Resources, Path )
 	{
 		resource_detail.parent = null;
 		resource_detail.name = null;
-		resource_detail.resource_info = null;
-		resource_detail.inherited_info = null;
+		resource_detail.info = null;
+		resource_detail.resource = null;
 		Object.keys( Resources ).forEach(
 			key =>
 			{
@@ -189,7 +189,7 @@ function Select( Resources, Path )
 		if ( resource_info )
 		{
 			// Copy the ancestor resource info.
-			Object.keys( resource_info ).forEach( key => resource_detail.inherited_info[ key ] = resource_info[ key ] );
+			Object.keys( resource_info ).forEach( key => resource_detail.resource[ key ] = resource_info[ key ] );
 		}
 		elements.shift();
 	}
@@ -201,12 +201,12 @@ function Select( Resources, Path )
 	let resource_info = Resources[ Path ];
 	if ( typeof resource_info === 'undefined' ) 
 	{
-		resource_detail.resource_info = null;
+		resource_detail.info = null;
 	}
 	else
 	{
-		Object.keys( resource_info ).forEach( key => resource_detail.inherited_info[ key ] = resource_info[ key ] );
-		Object.keys( resource_info ).forEach( key => resource_detail.resource_info[ key ] = resource_info[ key ] );
+		Object.keys( resource_info ).forEach( key => resource_detail.resource[ key ] = resource_info[ key ] );
+		Object.keys( resource_info ).forEach( key => resource_detail.info[ key ] = resource_info[ key ] );
 	}
 
 	// Get the children.
@@ -242,7 +242,9 @@ function Select( Resources, Path )
 function Header( Resources )
 {
 	if ( !Resources ) { throw new Error( `The parameter [Resources] is required.` ); }
-	return ( Object.keys( Resources ) );
+	let header = Object.keys( Resources );
+	header.sort();
+	return header;
 };
 
 
@@ -269,6 +271,8 @@ function Locate( Resources, Name )
 				paths.push( key );
 			}
 		} );
+
+	paths.sort();
 
 	return paths;
 };
