@@ -39,8 +39,8 @@ describe( `lib-resource-path`,
 							{
 								parent: null,
 								name: null,
-								resource_info: null,
-								inherited_info: null,
+								info: null,
+								resource: null,
 								children: [ '.$' ],
 							} );
 						return;
@@ -55,8 +55,8 @@ describe( `lib-resource-path`,
 							{
 								parent: '',
 								name: '.$',
-								resource_info: { label: 'root', root: '.$' },
-								inherited_info: { label: 'root', root: '.$' },
+								info: { label: 'root', root: '.$' },
+								resource: { label: 'root', root: '.$' },
 								children: [ '.test', '.values' ],
 							} );
 						return;
@@ -71,8 +71,8 @@ describe( `lib-resource-path`,
 							{
 								parent: '.$',
 								name: '.test',
-								resource_info: { label: 'test' },
-								inherited_info: { label: 'test', root: '.$' },
+								info: { label: 'test' },
+								resource: { label: 'test', root: '.$' },
 								children: [],
 							} );
 						return;
@@ -87,8 +87,8 @@ describe( `lib-resource-path`,
 							{
 								parent: '.$',
 								name: '.values',
-								resource_info: null,
-								inherited_info: { label: 'root', root: '.$' },
+								info: null,
+								resource: { label: 'root', root: '.$' },
 								children: [ '.1', '.2', '.3' ],
 							} );
 						return;
@@ -103,8 +103,8 @@ describe( `lib-resource-path`,
 							{
 								parent: '.$.values',
 								name: '.1',
-								resource_info: { value: true },
-								inherited_info: { label: 'root', root: '.$', value: true },
+								info: { value: true },
+								resource: { label: 'root', root: '.$', value: true },
 								children: [],
 							} );
 						return;
@@ -119,8 +119,8 @@ describe( `lib-resource-path`,
 							{
 								parent: '.$.values',
 								name: '.2',
-								resource_info: { value: 3.14 },
-								inherited_info: { label: 'root', root: '.$', value: 3.14 },
+								info: { value: 3.14 },
+								resource: { label: 'root', root: '.$', value: 3.14 },
 								children: [],
 							} );
 						return;
@@ -135,8 +135,8 @@ describe( `lib-resource-path`,
 							{
 								parent: '.$.values',
 								name: '.3',
-								resource_info: { value: 'words' },
-								inherited_info: { label: 'root', root: '.$', value: 'words' },
+								info: { value: 'words' },
+								resource: { label: 'root', root: '.$', value: 'words' },
 								children: [],
 							} );
 						return;
