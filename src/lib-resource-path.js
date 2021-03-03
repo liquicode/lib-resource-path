@@ -146,20 +146,17 @@ function Select( Resources, Path )
 	// Build the resource info.
 	let resource_detail =
 	{
-		parent: '',
-		name: '',
-		info: {},
-		resource: {},
-		children: [],
+		parent: '',			// The path of the parent resource
+		name: '',			// The name of this resource
+		info: null,			// The info for this resource
+		exists: false,		// True if this resource exists
+		resource: {},		// The info inherited from the parent
+		children: [],		// Names of child resources
 	};
 
 	// Return just the root's children when no path is given.
 	if ( !Path || !Path.length ) 
 	{
-		resource_detail.parent = null;
-		resource_detail.name = null;
-		resource_detail.info = null;
-		resource_detail.resource = null;
 		Object.keys( Resources ).forEach(
 			key =>
 			{
@@ -199,12 +196,10 @@ function Select( Resources, Path )
 
 	// Set the resource info.
 	let resource_info = Resources[ Path ];
-	if ( typeof resource_info === 'undefined' ) 
+	if ( typeof resource_info !== 'undefined' ) 
 	{
-		resource_detail.info = null;
-	}
-	else
-	{
+		resource_detail.info = {};
+		resource_detail.exists = true;
 		Object.keys( resource_info ).forEach( key => resource_detail.resource[ key ] = resource_info[ key ] );
 		Object.keys( resource_info ).forEach( key => resource_detail.info[ key ] = resource_info[ key ] );
 	}
