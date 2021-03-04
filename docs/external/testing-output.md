@@ -26,6 +26,7 @@
   lib-resource-path
     Select Tests
       ✓ should retrieve root resource info
+      ✓ should retrieve '.' (also root resource info)
       ✓ should retrieve '.$'
       ✓ should retrieve '.$.test'
       ✓ should retrieve '.$.values'
@@ -49,7 +50,7 @@
       ✓ should rename the delimiter
 
 
-  26 passing (12ms)
+  27 passing (12ms)
 
 
 ```

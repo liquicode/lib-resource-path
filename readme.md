@@ -1,5 +1,5 @@
 
-# lib-resource-path (v0.0.4)
+# lib-resource-path (v0.0.5)
 
 
 ---------------------------------------------------------------------
@@ -22,22 +22,6 @@ const Lib = require( '@liquicode/lib-resource-path' );
 
 
 ## Simple Usage
-
-
----------------------------------------------------------------------
-
-
-## Functions
-
-- Create
-- Update
-- Delete
-- Select
-
-- Header
-- Locate
-- Copyto
-- Moveto
 
 
 ---------------------------------------------------------------------
