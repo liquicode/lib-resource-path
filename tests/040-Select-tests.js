@@ -48,6 +48,23 @@ describe( `lib-resource-path`,
 					} );
 
 				//---------------------------------------------------------------------
+				it( `should retrieve '.' (also root resource info)`,
+					async function ()
+					{
+						let resource = LIB_RESOURCE_PATH.Select( Resources, '.' );
+						LIB_ASSERT.deepStrictEqual( resource,
+							{
+								parent: '',
+								name: '',
+								info: null,
+								exists: false,
+								resource: {},
+								children: [ '.$' ],
+							} );
+						return;
+					} );
+
+				//---------------------------------------------------------------------
 				it( `should retrieve '.$'`,
 					async function ()
 					{

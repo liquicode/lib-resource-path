@@ -27,6 +27,22 @@ const Lib = require( '@liquicode/lib-resource-path' );
 ---------------------------------------------------------------------
 
 
+## Functions
+
+- Create
+- Update
+- Delete
+- Select
+
+- Header
+- Locate
+- Copyto
+- Moveto
+
+
+---------------------------------------------------------------------
+
+
 ## More Links
 
 - [Library Source Code](https://github.com/liquicode/lib-resource-path)

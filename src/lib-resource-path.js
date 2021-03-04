@@ -155,7 +155,7 @@ function Select( Resources, Path )
 	};
 
 	// Return just the root's children when no path is given.
-	if ( !Path || !Path.length ) 
+	if ( !Path || ( Path.length == 1 ) ) 
 	{
 		Object.keys( Resources ).forEach(
 			key =>
