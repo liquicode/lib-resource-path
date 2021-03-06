@@ -17,9 +17,10 @@ Dependencies:
 ## Finalize Project for Release
 
 - Do webpack: `bash build/webpack/010-webpack.sh`
-- Runs tests and store output in `docs/testing-output.md`: `npx mocha -u bdd tests/*.js --timeout 0 --slow 10`
-- Copy 'docs/external/license.md' to project root.
-- Copy 'docs/external/readme.md' to project root.
+- Runs tests and store output in `docs/external/testing-output.md`: `npx mocha -u bdd tests/*.js --timeout 0 --slow 10`
+- Copy 'license.md' to 'docs/external'.
+- Copy 'readme.md' to 'docs/external'.
+- Copy 'VERSION' to 'docs/external'.
 - Do final staging: `git add .`
 - Do final commit: `git commit -m "Finalization for vX.Y.Z"`
 - Do final push: `git push origin master`
@@ -32,10 +33,10 @@ Dependencies:
 
 - Increments the minor portion of the version number (e.g. 0.0.1 -> 0.0.2).
 - Search/Replace the old version number with the new version in source files:
-	- `package.json`
-	- `VERSION`
-	- `docs/_coverpage.md` (in format: `(vX.Y.Z)`)
-	- `docs/guides/readme.md` (in format: `(vX.Y.Z)`)
+	- `package.json`        format `X.Y.Z`
+	- `VERSION`             format `X.Y.Z`
+	- `readme.md`           format `(vX.Y.Z)`
+	- `docs/_coverpage.md`  format `(vX.Y.Z)`
 
 ## Cleanup New Version
 
@@ -313,17 +314,19 @@ function replace_text( Text, Search, Replace )
 	path = LIB_PATH.join( process.cwd(), 'VERSION' );
 	LIB_FS.writeFileSync( path, PACKAGE.version );
 
-	log_muted( `Updating file: docs/_coverpage.md` );
-	path = LIB_PATH.join( process.cwd(), 'docs', '_coverpage.md' );
-	doc = LIB_FS.readFileSync( path, 'utf-8' );
-	if ( !doc.includes( `(v${prev_version})` ) ) { console.error( `Unable to locate version number in file: docs/_coverpage.md` ); }
-	doc = replace_text( doc, `(v${prev_version})`, `(v${PACKAGE.version})` );
-	LIB_FS.writeFileSync( path, doc );
-
+	// Update readme.md
 	log_muted( `Updating file: readme.md` );
 	path = LIB_PATH.join( process.cwd(), 'readme.md' );
 	doc = LIB_FS.readFileSync( path, 'utf-8' );
 	if ( !doc.includes( `(v${prev_version})` ) ) { console.error( `Unable to locate version number in file: readme.md` ); }
+	doc = replace_text( doc, `(v${prev_version})`, `(v${PACKAGE.version})` );
+	LIB_FS.writeFileSync( path, doc );
+
+	// Update docs/_coverpage.md
+	log_muted( `Updating file: docs/_coverpage.md` );
+	path = LIB_PATH.join( process.cwd(), 'docs', '_coverpage.md' );
+	doc = LIB_FS.readFileSync( path, 'utf-8' );
+	if ( !doc.includes( `(v${prev_version})` ) ) { console.error( `Unable to locate version number in file: docs/_coverpage.md` ); }
 	doc = replace_text( doc, `(v${prev_version})`, `(v${PACKAGE.version})` );
 	LIB_FS.writeFileSync( path, doc );
 
