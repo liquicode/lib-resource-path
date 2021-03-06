@@ -67,7 +67,7 @@
     ✓ should rename the delimiter
 
 
-  44 passing (35ms)
+  44 passing (18ms)
 
 
 ```

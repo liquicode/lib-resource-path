@@ -316,12 +316,14 @@ function replace_text( Text, Search, Replace )
 	log_muted( `Updating file: docs/_coverpage.md` );
 	path = LIB_PATH.join( process.cwd(), 'docs', '_coverpage.md' );
 	doc = LIB_FS.readFileSync( path, 'utf-8' );
+	if ( !doc.includes( `(v${prev_version})` ) ) { console.error( `Unable to locate version number in file: docs/_coverpage.md` ); }
 	doc = replace_text( doc, `(v${prev_version})`, `(v${PACKAGE.version})` );
 	LIB_FS.writeFileSync( path, doc );
 
 	log_muted( `Updating file: readme.md` );
 	path = LIB_PATH.join( process.cwd(), 'readme.md' );
 	doc = LIB_FS.readFileSync( path, 'utf-8' );
+	if ( !doc.includes( `(v${prev_version})` ) ) { console.error( `Unable to locate version number in file: readme.md` ); }
 	doc = replace_text( doc, `(v${prev_version})`, `(v${PACKAGE.version})` );
 	LIB_FS.writeFileSync( path, doc );
 
@@ -353,5 +355,6 @@ function replace_text( Text, Search, Replace )
 
 	log_blank_line();
 	log_heading( `[910-release-version] finished` );
+	log_heading( `Published version [${prev_version}], you are now at version [${PACKAGE.version}].` );
 	return;
 } )();
