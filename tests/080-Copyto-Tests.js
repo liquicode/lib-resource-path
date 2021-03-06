@@ -6,7 +6,7 @@ const LIB_RESOURCE_PATH = require( '../src/lib-resource-path.js' );
 
 
 //---------------------------------------------------------------------
-describe( `lib-resource-path`,
+describe( `080 - Copyto Tests`,
 	function ()
 	{
 

@@ -6,7 +6,7 @@ const LIB_RESOURCE_PATH = require( '../src/lib-resource-path.js' );
 
 
 //---------------------------------------------------------------------
-describe( `lib-resource-path`,
+describe( `040 - Select Tests`,
 	function ()
 	{
 
@@ -31,12 +31,13 @@ describe( `lib-resource-path`,
 				} );
 
 				//---------------------------------------------------------------------
-				it( `should retrieve root resource info`,
+				it( `should retrieve empty path (root resource info)`,
 					async function ()
 					{
 						let resource = LIB_RESOURCE_PATH.Select( Resources, '' );
 						LIB_ASSERT.deepStrictEqual( resource,
 							{
+								path: '',
 								parent: '',
 								name: '',
 								info: null,
@@ -48,14 +49,15 @@ describe( `lib-resource-path`,
 					} );
 
 				//---------------------------------------------------------------------
-				it( `should retrieve '.' (also root resource info)`,
+				it( `should retrieve '.' (namespace's root info)`,
 					async function ()
 					{
 						let resource = LIB_RESOURCE_PATH.Select( Resources, '.' );
 						LIB_ASSERT.deepStrictEqual( resource,
 							{
+								path: '',
 								parent: '',
-								name: '',
+								name: '.',
 								info: null,
 								exists: false,
 								resource: {},
@@ -71,6 +73,7 @@ describe( `lib-resource-path`,
 						let resource = LIB_RESOURCE_PATH.Select( Resources, '.$' );
 						LIB_ASSERT.deepStrictEqual( resource,
 							{
+								path: '.$',
 								parent: '',
 								name: '.$',
 								info: { label: 'root', root: '.$' },
@@ -88,6 +91,7 @@ describe( `lib-resource-path`,
 						let resource = LIB_RESOURCE_PATH.Select( Resources, '.$.test' );
 						LIB_ASSERT.deepStrictEqual( resource,
 							{
+								path: '.$.test',
 								parent: '.$',
 								name: '.test',
 								info: { label: 'test' },
@@ -105,6 +109,7 @@ describe( `lib-resource-path`,
 						let resource = LIB_RESOURCE_PATH.Select( Resources, '.$.values' );
 						LIB_ASSERT.deepStrictEqual( resource,
 							{
+								path: '.$.values',
 								parent: '.$',
 								name: '.values',
 								info: null,
@@ -122,6 +127,7 @@ describe( `lib-resource-path`,
 						let resource = LIB_RESOURCE_PATH.Select( Resources, '.$.values.1' );
 						LIB_ASSERT.deepStrictEqual( resource,
 							{
+								path: '.$.values.1',
 								parent: '.$.values',
 								name: '.1',
 								info: { value: true },
@@ -139,6 +145,7 @@ describe( `lib-resource-path`,
 						let resource = LIB_RESOURCE_PATH.Select( Resources, '.$.values.2' );
 						LIB_ASSERT.deepStrictEqual( resource,
 							{
+								path: '.$.values.2',
 								parent: '.$.values',
 								name: '.2',
 								info: { value: 3.14 },
@@ -156,6 +163,7 @@ describe( `lib-resource-path`,
 						let resource = LIB_RESOURCE_PATH.Select( Resources, '.$.values.3' );
 						LIB_ASSERT.deepStrictEqual( resource,
 							{
+								path: '.$.values.3',
 								parent: '.$.values',
 								name: '.3',
 								info: { value: 'words' },

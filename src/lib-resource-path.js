@@ -17,6 +17,7 @@ exports.Delete = Delete;
 exports.Select = Select;
 
 exports.Header = Header;
+exports.Getall = Getall;
 exports.Locate = Locate;
 exports.Copyto = Copyto;
 exports.Moveto = Moveto;
@@ -132,6 +133,7 @@ function Delete( Resources, Path )
  * @param {array} Resources The array of resources.
  * @param {string} Path The path of the resource.
  * @returns {object} An object containing information about the resource:
+ *		- path : the resource path of this resource.
  *		- parent : the resource path of the parent.
  *		- name : The name of this resource (used in path).
  *		- resource_info : The info object defined by this resource.
@@ -146,6 +148,7 @@ function Select( Resources, Path )
 	// Build the resource info.
 	let resource_detail =
 	{
+		path: Path,			// The path of this resource
 		parent: '',			// The path of the parent resource
 		name: '',			// The name of this resource
 		info: null,			// The info for this resource
@@ -155,8 +158,10 @@ function Select( Resources, Path )
 	};
 
 	// Return just the root's children when no path is given.
-	if ( !Path || ( Path.length == 1 ) ) 
+	if ( !Path || ( Path.length === 0 ) ) 
 	{
+		resource_detail.path = '';
+		resource_detail.name = '';
 		Object.keys( Resources ).forEach(
 			key =>
 			{
@@ -173,6 +178,28 @@ function Select( Resources, Path )
 
 	// Get the path delimiter.
 	let path_delimiter = Path.substr( 0, 1 );
+
+	// Return just the namespaces's children when only a delimiter is given.
+	if ( Path.length === 1 ) 
+	{
+		resource_detail.path = '';
+		resource_detail.name = Path;
+		Object.keys( Resources ).forEach(
+			key =>
+			{
+				let delimiter = key.substr( 0, 1 );
+				if ( delimiter === path_delimiter )
+				{
+					let entries = key.split( delimiter );
+					let name = delimiter + entries[ 1 ];
+					if ( !resource_detail.children.includes( name ) )
+					{
+						resource_detail.children.push( name );
+					}
+				}
+			} );
+		return resource_detail;
+	}
 
 	// Parse the path.
 	let elements = Path.split( path_delimiter );
@@ -232,11 +259,52 @@ function Select( Resources, Path )
 //---------------------------------------------------------------------
 /**
  * Lists all the paths contained in `Resources`.
+ * @param {array} Resources The array of resources.
  * @returns {array} Array of resource paths.
  */
 function Header( Resources )
 {
 	if ( !Resources ) { throw new Error( `The parameter [Resources] is required.` ); }
+	let header = Object.keys( Resources );
+	header.sort();
+	return header;
+};
+
+
+//---------------------------------------------------------------------
+/**
+ * Lists all paths and info contained in `Resources`.
+ * @param {array} Resources The array of resources.
+ * @param {object} Options An (optional) options object.
+ * - item_type: The type of items to return. Can be one of: 'info' | 'select'.
+ * - list_type: The type of list to return. Can be one of: 'map' | 'flat' | 'tree'
+ * - tree_type: The type of tree to return. Can be one of: 'sparse' | 'full'
+ * @returns {any} An array or map as specified in `Options`.
+ */
+function Getall( Resources, Options )
+{
+	if ( !Resources ) { throw new Error( `The parameter [Resources] is required.` ); }
+
+	// Sort out the options.
+	Options = Options ? Options : {};
+	Options.item_type = Options.item_type ? Options.item_type : 'select';
+	Options.list_type = Options.list_type ? Options.list_type : 'map';
+	Options.tree_type = Options.tree_type ? Options.tree_type : 'full';
+	//NOTE: Resources is a sparse map of infos.
+
+	let items = [];
+	Object.keys( Resources ).forEach(
+		key =>
+		{
+			let delimiter = key.substr( 0, 1 );
+			let elements = key.split( delimiter );
+			if ( elements.includes( Name ) )
+			{
+				paths.push( key );
+			}
+		} );
+
+
 	let header = Object.keys( Resources );
 	header.sort();
 	return header;

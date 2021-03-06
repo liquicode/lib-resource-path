@@ -6,12 +6,12 @@ const LIB_RESOURCE_PATH = require( '../src/lib-resource-path.js' );
 
 
 //---------------------------------------------------------------------
-describe( `lib-resource-path`,
+describe( `030 - Delete Tests`,
 	function ()
 	{
 
 		//---------------------------------------------------------------------
-		describe( `Update Tests`,
+		describe( `Delete Tests`,
 			function ()
 			{
 				//---------------------------------------------------------------------
@@ -31,16 +31,44 @@ describe( `lib-resource-path`,
 				} );
 
 				//---------------------------------------------------------------------
-				it( `should update a single resource`,
+				it( `should remove a single resource`,
 					async function ()
 					{
-						LIB_RESOURCE_PATH.Update( Resources, '.$.values.2', { value: 42, done: true } );
+						LIB_RESOURCE_PATH.Delete( Resources, '.$.values.2' );
 						LIB_ASSERT.deepStrictEqual( Resources,
 							{
 								".$": { label: 'root', root: '.$' },
 								".$.test": { label: 'test' },
 								".$.values.1": { value: true },
-								".$.values.2": { value: 42, done: true },
+								".$.values.3": { value: 'words' },
+							} );
+						return;
+					} );
+
+				//---------------------------------------------------------------------
+				it( `should remove a child resource`,
+					async function ()
+					{
+						LIB_RESOURCE_PATH.Delete( Resources, '.$.values' );
+						LIB_ASSERT.deepStrictEqual( Resources,
+							{
+								".$": { label: 'root', root: '.$' },
+								".$.test": { label: 'test' },
+							} );
+						return;
+					} );
+
+				//---------------------------------------------------------------------
+				it( `should do nothing for a non-existant resource`,
+					async function ()
+					{
+						LIB_RESOURCE_PATH.Delete( Resources, 'doesnt.exist' );
+						LIB_ASSERT.deepStrictEqual( Resources,
+							{
+								".$": { label: 'root', root: '.$' },
+								".$.test": { label: 'test' },
+								".$.values.1": { value: true },
+								".$.values.2": { value: 3.14 },
 								".$.values.3": { value: 'words' },
 							} );
 						return;
