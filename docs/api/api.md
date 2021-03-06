@@ -143,13 +143,16 @@ The `Options` object controls the content and format of the returned items.
 Options = {
 	item_type: 'info', // The type of items to return.
 	list_type: 'sparse', // The type of list to return.
-	data_type: 'array', // The type of data to return.
+	return_type: 'array', // The type of data to return.
 }
 ```
 
 ***item_type***
 
 Can be one of: `info` | `select`
+
+- `info`   : return simple objects containing the resource `info` property
+- `select` : return rich objects describing all aspects of the resource
 
 Using `info` will return items containg hierarchical information (`path`, `parent`, and `name`) and the `info` property.
 
@@ -161,10 +164,17 @@ This will include hierarchical properties as well as the final inherited `resour
 
 Can be one of: `sparse` | `full` | `tree`
 
+- `sparse` :
+- `full`   :
+- `tree`   :
 
-***data_type***
+
+***return_type***
 
 Can be one of: `array` | `map`
+
+- `array`  : return value will be an array of objects
+- `map`    : return value will be a single object
 
 
 ### Example
@@ -176,7 +186,7 @@ Resources = [
 ];
 
 // Get an 'info sparse array'. This should mimic the structure is Resources closely.
-items = LibResourcePath.Getall( Resources, { item_type: 'info', list_type: 'sparse', data_type: 'array'} );
+items = LibResourcePath.Getall( Resources, { item_type: 'info', list_type: 'sparse', return_type: 'array'} );
 /*
 items ===
 [
@@ -187,7 +197,7 @@ items ===
 */
 
 // If we ask for an 'info full array', we will get all missing path segments (.koo) as well.
-items = LibResourcePath.Getall( Resources, { item_type: 'info', list_type: 'full', data_type: 'array'} );
+items = LibResourcePath.Getall( Resources, { item_type: 'info', list_type: 'full', return_type: 'array'} );
 /*
 items ===
 [
@@ -199,7 +209,7 @@ items ===
 */
 
 // For 'info tree array', we get all missing path segments and the items are stored in embedded arrays.
-items = LibResourcePath.Getall( Resources, { item_type: 'info', list_type: 'tree', data_type: 'array'} );
+items = LibResourcePath.Getall( Resources, { item_type: 'info', list_type: 'tree', return_type: 'array'} );
 /*
 items ===
 [

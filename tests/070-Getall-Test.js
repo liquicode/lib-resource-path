@@ -32,7 +32,7 @@ describe( `070 - Getall Tests`,
 		// item_type: The type of items to return. Can be one of: 'info' | 'select'.
 		// list_type: The type of list to return. Can be one of: 'flat' | 'tree'
 		// tree_type: The type of tree to return. Can be one of: 'sparse' | 'full'
-		// data_type: The type of data to return. Can be one of: 'array' | 'map'
+		// return_type: The type of data to return. Can be one of: 'array' | 'map'
 
 
 		//---------------------------------------------------------------------
@@ -40,7 +40,7 @@ describe( `070 - Getall Tests`,
 			async function ()
 			{
 				let items = LIB_RESOURCE_PATH.Getall( Resources,
-					{ item_type: 'info', list_type: 'sparse', data_type: 'array' } );
+					{ item_type: 'info', list_type: 'sparse', return_type: 'array' } );
 				LIB_ASSERT.ok( items );
 				LIB_ASSERT.strictEqual( items.length, 5 );
 				LIB_ASSERT.deepStrictEqual( items,
@@ -62,7 +62,7 @@ describe( `070 - Getall Tests`,
 			async function ()
 			{
 				let items = LIB_RESOURCE_PATH.Getall( Resources,
-					{ item_type: 'select', list_type: 'sparse', data_type: 'array' } );
+					{ item_type: 'select', list_type: 'sparse', return_type: 'array' } );
 				LIB_ASSERT.ok( items );
 				LIB_ASSERT.strictEqual( items.length, 5 );
 				LIB_ASSERT.deepStrictEqual( items,
@@ -105,7 +105,7 @@ describe( `070 - Getall Tests`,
 			async function ()
 			{
 				let items = LIB_RESOURCE_PATH.Getall( Resources,
-					{ item_type: 'info', list_type: 'full', data_type: 'array' } );
+					{ item_type: 'info', list_type: 'full', return_type: 'array' } );
 				LIB_ASSERT.ok( items );
 				LIB_ASSERT.deepStrictEqual( items,
 					[
@@ -126,7 +126,7 @@ describe( `070 - Getall Tests`,
 			async function ()
 			{
 				let items = LIB_RESOURCE_PATH.Getall( Resources,
-					{ item_type: 'select', list_type: 'full', data_type: 'array' } );
+					{ item_type: 'select', list_type: 'full', return_type: 'array' } );
 				LIB_ASSERT.ok( items );
 				LIB_ASSERT.deepStrictEqual( items,
 					[
@@ -168,7 +168,7 @@ describe( `070 - Getall Tests`,
 			async function ()
 			{
 				let items = LIB_RESOURCE_PATH.Getall( Resources,
-					{ item_type: 'info', list_type: 'tree', data_type: 'array' } );
+					{ item_type: 'info', list_type: 'tree', return_type: 'array' } );
 				LIB_ASSERT.ok( items );
 				LIB_ASSERT.deepStrictEqual( items,
 					[
@@ -223,7 +223,7 @@ describe( `070 - Getall Tests`,
 			async function ()
 			{
 				let items = LIB_RESOURCE_PATH.Getall( Resources,
-					{ item_type: 'select', list_type: 'tree', data_type: 'array' } );
+					{ item_type: 'select', list_type: 'tree', return_type: 'array' } );
 				LIB_ASSERT.ok( items );
 				LIB_ASSERT.deepStrictEqual( items,
 					[
@@ -278,7 +278,7 @@ describe( `070 - Getall Tests`,
 			async function ()
 			{
 				let items = LIB_RESOURCE_PATH.Getall( Resources,
-					{ item_type: 'info', list_type: 'sparse', data_type: 'map' } );
+					{ item_type: 'info', list_type: 'sparse', return_type: 'map' } );
 				LIB_ASSERT.ok( items );
 				LIB_ASSERT.deepStrictEqual( items,
 					{
@@ -306,7 +306,7 @@ describe( `070 - Getall Tests`,
 			async function ()
 			{
 				let items = LIB_RESOURCE_PATH.Getall( Resources,
-					{ item_type: 'select', list_type: 'sparse', data_type: 'map' } );
+					{ item_type: 'select', list_type: 'sparse', return_type: 'map' } );
 				LIB_ASSERT.ok( items );
 				LIB_ASSERT.deepStrictEqual( items,
 					{
@@ -355,7 +355,7 @@ describe( `070 - Getall Tests`,
 			async function ()
 			{
 				let items = LIB_RESOURCE_PATH.Getall( Resources,
-					{ item_type: 'info', list_type: 'full', data_type: 'map' } );
+					{ item_type: 'info', list_type: 'full', return_type: 'map' } );
 				LIB_ASSERT.ok( items );
 				LIB_ASSERT.deepStrictEqual( items,
 					{
@@ -383,7 +383,7 @@ describe( `070 - Getall Tests`,
 			async function ()
 			{
 				let items = LIB_RESOURCE_PATH.Getall( Resources,
-					{ item_type: 'select', list_type: 'full', data_type: 'map' } );
+					{ item_type: 'select', list_type: 'full', return_type: 'map' } );
 				LIB_ASSERT.ok( items );
 				LIB_ASSERT.deepStrictEqual( items,
 					{
@@ -432,7 +432,7 @@ describe( `070 - Getall Tests`,
 			async function ()
 			{
 				let items = LIB_RESOURCE_PATH.Getall( Resources,
-					{ item_type: 'info', list_type: 'tree', data_type: 'map' } );
+					{ item_type: 'info', list_type: 'tree', return_type: 'map' } );
 				LIB_ASSERT.ok( items );
 				LIB_ASSERT.deepStrictEqual( items,
 					{
@@ -481,7 +481,7 @@ describe( `070 - Getall Tests`,
 			async function ()
 			{
 				let items = LIB_RESOURCE_PATH.Getall( Resources,
-					{ item_type: 'select', list_type: 'tree', data_type: 'map' } );
+					{ item_type: 'select', list_type: 'tree', return_type: 'map' } );
 				LIB_ASSERT.ok( items );
 				LIB_ASSERT.deepStrictEqual( items,
 					{

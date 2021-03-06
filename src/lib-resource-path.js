@@ -278,7 +278,7 @@ function Header( Resources )
  * @param {object} Options An (optional) options object.
  * - item_type: The type of items to return. Can be one of: 'info' | 'select'.
  * - list_type: The type of list to return. Can be one of: 'sparse' | 'full' | 'tree'
- * - data_type: The type of data to return. Can be one of: 'array' | 'map'
+ * - return_type: The type of data to return. Can be one of: 'array' | 'map'
  * @returns {any} An array or map as specified in `Options`.
  */
 function Getall( Resources, Options )
@@ -289,7 +289,10 @@ function Getall( Resources, Options )
 	Options = Options ? Options : {};
 	Options.item_type = Options.item_type ? Options.item_type : 'info';
 	Options.list_type = Options.list_type ? Options.list_type : 'sparse';
-	Options.data_type = Options.data_type ? Options.data_type : 'array';
+	Options.return_type = Options.return_type ? Options.return_type : 'array';
+	if ( ![ 'info', 'select' ].includes( Options.item_type ) ) { throw new Error( `Invalid option for item_type, must be one of: 'info', or 'select'.` ); }
+	if ( ![ 'sparse', 'full', 'tree' ].includes( Options.list_type ) ) { throw new Error( `Invalid option for list_type, must be one of: 'sparse', 'full', or 'tree'.` ); }
+	if ( ![ 'array', 'map' ].includes( Options.return_type ) ) { throw new Error( `Invalid option for return_type, must be one of: 'array', or 'map'.` ); }
 	//NOTE: Resources is an [info sparse map]
 
 	// Get the sparse paths.
@@ -320,8 +323,8 @@ function Getall( Resources, Options )
 
 	// Initialize the items array.
 	let items = null;
-	if ( Options.data_type === 'array' ) { items = []; }
-	else if ( Options.data_type === 'map' ) { items = {}; }
+	if ( Options.return_type === 'array' ) { items = []; }
+	else if ( Options.return_type === 'map' ) { items = {}; }
 
 	// Build the items array.
 	paths.forEach(
@@ -344,11 +347,11 @@ function Getall( Resources, Options )
 				item = select;
 			}
 			// Add the item to the data structure.
-			if ( Options.data_type === 'array' )
+			if ( Options.return_type === 'array' )
 			{
 				items.push( item );
 			}
-			else if ( Options.data_type === 'map' )
+			else if ( Options.return_type === 'map' )
 			{
 				items[ path ] = item;
 			}
@@ -357,8 +360,8 @@ function Getall( Resources, Options )
 	// Check to convert a flat list to a tree list
 	if ( Options.list_type === 'tree' )
 	{
-		if ( Options.data_type === 'array' ) { items = build_tree_array( items ); }
-		else if ( Options.data_type === 'map' ) { items = build_tree_map( items ); }
+		if ( Options.return_type === 'array' ) { items = build_tree_array( items ); }
+		else if ( Options.return_type === 'map' ) { items = build_tree_map( items ); }
 	}
 
 	// Return the items.
