@@ -276,7 +276,7 @@ function replace_text( Text, Search, Replace )
 	//=====================================================================
 	//=====================================================================
 
-	
+
 	// - Increments the minor portion of the version number (e.g. 0.0.1 -> 0.0.2).
 	let prev_version = PACKAGE.version;
 	{
