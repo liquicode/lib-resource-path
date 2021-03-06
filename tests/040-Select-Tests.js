@@ -10,170 +10,165 @@ describe( `040 - Select Tests`,
 	function ()
 	{
 
+
 		//---------------------------------------------------------------------
-		describe( `Select Tests`,
-			function ()
+		let Resources = null;
+
+		beforeEach( function ()
+		{
+			Resources =
 			{
-				//---------------------------------------------------------------------
-				let Resources = null;
+				".$": { label: 'root', root: '.$' },
+				".$.test": { label: 'test' },
+				".$.values.1": { value: true },
+				".$.values.2": { value: 3.14 },
+				".$.values.3": { value: 'words' },
+			};
+			return;
+		} );
 
-				beforeEach( function ()
-				{
-					Resources =
+		//---------------------------------------------------------------------
+		it( `should retrieve empty path (root resource info)`,
+			async function ()
+			{
+				let resource = LIB_RESOURCE_PATH.Select( Resources, '' );
+				LIB_ASSERT.deepStrictEqual( resource,
 					{
-						".$": { label: 'root', root: '.$' },
-						".$.test": { label: 'test' },
-						".$.values.1": { value: true },
-						".$.values.2": { value: 3.14 },
-						".$.values.3": { value: 'words' },
-					};
-					return;
-				} );
-
-				//---------------------------------------------------------------------
-				it( `should retrieve empty path (root resource info)`,
-					async function ()
-					{
-						let resource = LIB_RESOURCE_PATH.Select( Resources, '' );
-						LIB_ASSERT.deepStrictEqual( resource,
-							{
-								path: '',
-								parent: '',
-								name: '',
-								info: null,
-								exists: false,
-								resource: {},
-								children: [ '.$' ],
-							} );
-						return;
+						path: '',
+						parent: '',
+						name: '',
+						info: null,
+						exists: false,
+						resource: {},
+						children: [ '.$' ],
 					} );
+				return;
+			} );
 
-				//---------------------------------------------------------------------
-				it( `should retrieve '.' (namespace's root info)`,
-					async function ()
+		//---------------------------------------------------------------------
+		it( `should retrieve '.' (namespace's root info)`,
+			async function ()
+			{
+				let resource = LIB_RESOURCE_PATH.Select( Resources, '.' );
+				LIB_ASSERT.deepStrictEqual( resource,
 					{
-						let resource = LIB_RESOURCE_PATH.Select( Resources, '.' );
-						LIB_ASSERT.deepStrictEqual( resource,
-							{
-								path: '',
-								parent: '',
-								name: '.',
-								info: null,
-								exists: false,
-								resource: {},
-								children: [ '.$' ],
-							} );
-						return;
+						path: '',
+						parent: '',
+						name: '.',
+						info: null,
+						exists: false,
+						resource: {},
+						children: [ '.$' ],
 					} );
+				return;
+			} );
 
-				//---------------------------------------------------------------------
-				it( `should retrieve '.$'`,
-					async function ()
+		//---------------------------------------------------------------------
+		it( `should retrieve '.$'`,
+			async function ()
+			{
+				let resource = LIB_RESOURCE_PATH.Select( Resources, '.$' );
+				LIB_ASSERT.deepStrictEqual( resource,
 					{
-						let resource = LIB_RESOURCE_PATH.Select( Resources, '.$' );
-						LIB_ASSERT.deepStrictEqual( resource,
-							{
-								path: '.$',
-								parent: '',
-								name: '.$',
-								info: { label: 'root', root: '.$' },
-								exists: true,
-								resource: { label: 'root', root: '.$' },
-								children: [ '.test', '.values' ],
-							} );
-						return;
+						path: '.$',
+						parent: '',
+						name: '.$',
+						info: { label: 'root', root: '.$' },
+						exists: true,
+						resource: { label: 'root', root: '.$' },
+						children: [ '.test', '.values' ],
 					} );
+				return;
+			} );
 
-				//---------------------------------------------------------------------
-				it( `should retrieve '.$.test'`,
-					async function ()
+		//---------------------------------------------------------------------
+		it( `should retrieve '.$.test'`,
+			async function ()
+			{
+				let resource = LIB_RESOURCE_PATH.Select( Resources, '.$.test' );
+				LIB_ASSERT.deepStrictEqual( resource,
 					{
-						let resource = LIB_RESOURCE_PATH.Select( Resources, '.$.test' );
-						LIB_ASSERT.deepStrictEqual( resource,
-							{
-								path: '.$.test',
-								parent: '.$',
-								name: '.test',
-								info: { label: 'test' },
-								exists: true,
-								resource: { label: 'test', root: '.$' },
-								children: [],
-							} );
-						return;
+						path: '.$.test',
+						parent: '.$',
+						name: '.test',
+						info: { label: 'test' },
+						exists: true,
+						resource: { label: 'test', root: '.$' },
+						children: [],
 					} );
+				return;
+			} );
 
-				//---------------------------------------------------------------------
-				it( `should retrieve '.$.values'`,
-					async function ()
+		//---------------------------------------------------------------------
+		it( `should retrieve '.$.values'`,
+			async function ()
+			{
+				let resource = LIB_RESOURCE_PATH.Select( Resources, '.$.values' );
+				LIB_ASSERT.deepStrictEqual( resource,
 					{
-						let resource = LIB_RESOURCE_PATH.Select( Resources, '.$.values' );
-						LIB_ASSERT.deepStrictEqual( resource,
-							{
-								path: '.$.values',
-								parent: '.$',
-								name: '.values',
-								info: null,
-								exists: false,
-								resource: { label: 'root', root: '.$' },
-								children: [ '.1', '.2', '.3' ],
-							} );
-						return;
+						path: '.$.values',
+						parent: '.$',
+						name: '.values',
+						info: null,
+						exists: false,
+						resource: { label: 'root', root: '.$' },
+						children: [ '.1', '.2', '.3' ],
 					} );
+				return;
+			} );
 
-				//---------------------------------------------------------------------
-				it( `should retrieve '.$.values.1'`,
-					async function ()
+		//---------------------------------------------------------------------
+		it( `should retrieve '.$.values.1'`,
+			async function ()
+			{
+				let resource = LIB_RESOURCE_PATH.Select( Resources, '.$.values.1' );
+				LIB_ASSERT.deepStrictEqual( resource,
 					{
-						let resource = LIB_RESOURCE_PATH.Select( Resources, '.$.values.1' );
-						LIB_ASSERT.deepStrictEqual( resource,
-							{
-								path: '.$.values.1',
-								parent: '.$.values',
-								name: '.1',
-								info: { value: true },
-								exists: true,
-								resource: { label: 'root', root: '.$', value: true },
-								children: [],
-							} );
-						return;
+						path: '.$.values.1',
+						parent: '.$.values',
+						name: '.1',
+						info: { value: true },
+						exists: true,
+						resource: { label: 'root', root: '.$', value: true },
+						children: [],
 					} );
+				return;
+			} );
 
-				//---------------------------------------------------------------------
-				it( `should retrieve '.$.values.2'`,
-					async function ()
+		//---------------------------------------------------------------------
+		it( `should retrieve '.$.values.2'`,
+			async function ()
+			{
+				let resource = LIB_RESOURCE_PATH.Select( Resources, '.$.values.2' );
+				LIB_ASSERT.deepStrictEqual( resource,
 					{
-						let resource = LIB_RESOURCE_PATH.Select( Resources, '.$.values.2' );
-						LIB_ASSERT.deepStrictEqual( resource,
-							{
-								path: '.$.values.2',
-								parent: '.$.values',
-								name: '.2',
-								info: { value: 3.14 },
-								exists: true,
-								resource: { label: 'root', root: '.$', value: 3.14 },
-								children: [],
-							} );
-						return;
+						path: '.$.values.2',
+						parent: '.$.values',
+						name: '.2',
+						info: { value: 3.14 },
+						exists: true,
+						resource: { label: 'root', root: '.$', value: 3.14 },
+						children: [],
 					} );
+				return;
+			} );
 
-				//---------------------------------------------------------------------
-				it( `should retrieve '.$.values.3'`,
-					async function ()
+		//---------------------------------------------------------------------
+		it( `should retrieve '.$.values.3'`,
+			async function ()
+			{
+				let resource = LIB_RESOURCE_PATH.Select( Resources, '.$.values.3' );
+				LIB_ASSERT.deepStrictEqual( resource,
 					{
-						let resource = LIB_RESOURCE_PATH.Select( Resources, '.$.values.3' );
-						LIB_ASSERT.deepStrictEqual( resource,
-							{
-								path: '.$.values.3',
-								parent: '.$.values',
-								name: '.3',
-								info: { value: 'words' },
-								exists: true,
-								resource: { label: 'root', root: '.$', value: 'words' },
-								children: [],
-							} );
-						return;
+						path: '.$.values.3',
+						parent: '.$.values',
+						name: '.3',
+						info: { value: 'words' },
+						exists: true,
+						resource: { label: 'root', root: '.$', value: 'words' },
+						children: [],
 					} );
-
+				return;
 			} );
 
 	} );

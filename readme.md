@@ -14,7 +14,7 @@ npm install @liquicode/lib-resource-path
 
 Include the library in your source code:
 ```javascript
-const Lib = require( '@liquicode/lib-resource-path' );
+const LibResourcePath = require( '@liquicode/lib-resource-path' );
 ```
 
 
@@ -22,6 +22,19 @@ const Lib = require( '@liquicode/lib-resource-path' );
 
 
 ## Simple Usage
+
+```js
+const LibResourcePath = require( '@liquicode/lib-resource-path' );
+let resources =
+{
+	".hello": { label: 'hello', test: true },
+	".hello.world": { label: 'world' },
+};
+
+let headers = LibResourcePath.Headers( resources );
+
+
+```
 
 
 ---------------------------------------------------------------------

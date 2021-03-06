@@ -277,8 +277,8 @@ function Header( Resources )
  * @param {array} Resources The array of resources.
  * @param {object} Options An (optional) options object.
  * - item_type: The type of items to return. Can be one of: 'info' | 'select'.
- * - list_type: The type of list to return. Can be one of: 'map' | 'flat' | 'tree'
- * - tree_type: The type of tree to return. Can be one of: 'sparse' | 'full'
+ * - list_type: The type of list to return. Can be one of: 'sparse' | 'full' | 'tree'
+ * - data_type: The type of data to return. Can be one of: 'array' | 'map'
  * @returns {any} An array or map as specified in `Options`.
  */
 function Getall( Resources, Options )
@@ -287,28 +287,149 @@ function Getall( Resources, Options )
 
 	// Sort out the options.
 	Options = Options ? Options : {};
-	Options.item_type = Options.item_type ? Options.item_type : 'select';
-	Options.list_type = Options.list_type ? Options.list_type : 'map';
-	Options.tree_type = Options.tree_type ? Options.tree_type : 'full';
-	//NOTE: Resources is a sparse map of infos.
+	Options.item_type = Options.item_type ? Options.item_type : 'info';
+	Options.list_type = Options.list_type ? Options.list_type : 'sparse';
+	Options.data_type = Options.data_type ? Options.data_type : 'array';
+	//NOTE: Resources is an [info sparse map]
 
-	let items = [];
-	Object.keys( Resources ).forEach(
-		key =>
-		{
-			let delimiter = key.substr( 0, 1 );
-			let elements = key.split( delimiter );
-			if ( elements.includes( Name ) )
+	// Get the sparse paths.
+	let paths = Object.keys( Resources );
+
+	// Check to generate all paths for list and tree modes.
+	if ( ( Options.list_type === 'full' ) || ( Options.list_type === 'tree' ) )
+	{
+		let sparse_paths = JSON.parse( JSON.stringify( paths ) );
+		sparse_paths.forEach(
+			sparse_path =>
 			{
-				paths.push( key );
+				let delimiter = sparse_path.substr( 0, 1 );
+				let elements = sparse_path.split( delimiter );
+				elements.shift(); // Remove leading empty element.
+				let path = '';
+				elements.forEach(
+					element =>
+					{
+						path += delimiter + element;
+						if ( !paths.includes( path ) ) { paths.push( path ); }
+					} );
+			} );
+	}
+
+	// Sort the paths.
+	paths.sort();
+
+	// Initialize the items array.
+	let items = null;
+	if ( Options.data_type === 'array' ) { items = []; }
+	else if ( Options.data_type === 'map' ) { items = {}; }
+
+	// Build the items array.
+	paths.forEach(
+		path =>
+		{
+			// Get the item.
+			let item = null;
+			let select = Select( Resources, path );
+			if ( Options.item_type === 'info' ) 
+			{
+				item = {
+					path: select.path,
+					parent: select.parent,
+					name: select.name,
+					info: Resources[ path ] || null,
+				};
+			}
+			else if ( Options.item_type === 'select' ) 
+			{
+				item = select;
+			}
+			// Add the item to the data structure.
+			if ( Options.data_type === 'array' )
+			{
+				items.push( item );
+			}
+			else if ( Options.data_type === 'map' )
+			{
+				items[ path ] = item;
 			}
 		} );
 
+	// Check to convert a flat list to a tree list
+	if ( Options.list_type === 'tree' )
+	{
+		if ( Options.data_type === 'array' ) { items = build_tree_array( items ); }
+		else if ( Options.data_type === 'map' ) { items = build_tree_map( items ); }
+	}
 
-	let header = Object.keys( Resources );
-	header.sort();
-	return header;
-};
+	// Return the items.
+	return items;
+}
+
+
+//---------------------------------------------------------------------
+function locate_tree_array_item( tree_items, path )
+{
+	let find = tree_items.find( item => item.path === path );
+	if ( !find )
+	{
+		for ( let index = 0; index < tree_items.length; index++ )
+		{
+			find = locate_tree_array_item( tree_items[ index ].items, path );
+			if ( find ) { break; }
+		}
+	}
+	return find;
+}
+
+
+//---------------------------------------------------------------------
+function build_tree_array( items )
+{
+	let flat_items = JSON.parse( JSON.stringify( items ) );
+	let tree_items = [];
+	flat_items.forEach(
+		item =>
+		{
+			item.items = [];
+			if ( item.parent === '' )
+			{
+				tree_items.push( item );
+			}
+			else
+			{
+				let parent_item = locate_tree_array_item( tree_items, item.parent );
+				parent_item.items.push( item );
+			}
+		} );
+	return tree_items;
+}
+
+
+//---------------------------------------------------------------------
+function build_tree_map( items )
+{
+	let flat_items = JSON.parse( JSON.stringify( items ) );
+	let tree_items = {};
+	Object.keys( flat_items ).forEach(
+		key =>
+		{
+			let item = flat_items[ key ];
+
+			let delimiter = item.parent.substr( 0, 1 );
+			let elements = item.parent.split( delimiter );
+			elements.shift(); // Remove leading empty entry.
+
+			let parent_item = tree_items;
+			elements.forEach(
+				( element, element_index ) =>
+				{
+					parent_item = parent_item[ delimiter + element ];
+				} );
+			parent_item[ item.name ] = item;
+
+		} );
+	return tree_items;
+}
 
 
 //---------------------------------------------------------------------

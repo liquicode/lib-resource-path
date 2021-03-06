@@ -11,85 +11,79 @@ describe( `010 - Create Tests`,
 	{
 
 		//---------------------------------------------------------------------
-		describe( `Create Tests`,
-			function ()
+		let Resources = null;
+
+		beforeEach( function ()
+		{
+			Resources = {};
+			return;
+		} );
+
+		//---------------------------------------------------------------------
+		it( `should create a resource from a missing object info`,
+			async function ()
 			{
+				LIB_RESOURCE_PATH.Create( Resources, '.$' );
+				LIB_ASSERT.deepStrictEqual( Resources, { ".$": {} } );
+				return;
+			} );
 
-				//---------------------------------------------------------------------
-				let Resources = null;
+		//---------------------------------------------------------------------
+		it( `should create a resource from an empty object`,
+			async function ()
+			{
+				LIB_RESOURCE_PATH.Create( Resources, '.$', {} );
+				LIB_ASSERT.deepStrictEqual( Resources, { ".$": {} } );
+				return;
+			} );
 
-				beforeEach( function ()
-				{
-					Resources = {};
-					return;
-				} );
+		//---------------------------------------------------------------------
+		it( `should create a resource from a simple object`,
+			async function ()
+			{
+				LIB_RESOURCE_PATH.Create( Resources, '.$', { value: true } );
+				LIB_ASSERT.deepStrictEqual( Resources, { ".$": { value: true } } );
+				return;
+			} );
 
-				//---------------------------------------------------------------------
-				it( `should create a resource from a missing object info`,
-					async function ()
+		//---------------------------------------------------------------------
+		it( `should create multiple resources`,
+			async function ()
+			{
+				LIB_RESOURCE_PATH.Create( Resources, '.$', { label: 'root', value: true } );
+				LIB_RESOURCE_PATH.Create( Resources, '.$.test', { label: 'test' } );
+				LIB_ASSERT.deepStrictEqual( Resources,
 					{
-						LIB_RESOURCE_PATH.Create( Resources, '.$' );
-						LIB_ASSERT.deepStrictEqual( Resources, { ".$": {} } );
-						return;
+						".$": { label: 'root', value: true },
+						".$.test": { label: 'test' },
 					} );
+				return;
+			} );
 
-				//---------------------------------------------------------------------
-				it( `should create a resource from an empty object`,
-					async function ()
+
+		//---------------------------------------------------------------------
+		it( `should not create missing resources`,
+			async function ()
+			{
+				LIB_RESOURCE_PATH.Create( Resources, '.$.test', { label: 'test', value: true } );
+				LIB_ASSERT.deepStrictEqual( Resources,
 					{
-						LIB_RESOURCE_PATH.Create( Resources, '.$', {} );
-						LIB_ASSERT.deepStrictEqual( Resources, { ".$": {} } );
-						return;
+						".$.test": { label: 'test', value: true },
 					} );
+				return;
+			} );
 
-				//---------------------------------------------------------------------
-				it( `should create a resource from a simple object`,
-					async function ()
+		//---------------------------------------------------------------------
+		it( `should not create multiple missing resources`,
+			async function ()
+			{
+				LIB_RESOURCE_PATH.Create( Resources, '.$.test.value', { label: 'test', value: true } );
+				LIB_ASSERT.deepStrictEqual( Resources,
 					{
-						LIB_RESOURCE_PATH.Create( Resources, '.$', { value: true } );
-						LIB_ASSERT.deepStrictEqual( Resources, { ".$": { value: true } } );
-						return;
+						".$.test.value": { label: 'test', value: true },
 					} );
-
-				//---------------------------------------------------------------------
-				it( `should create multiple resources`,
-					async function ()
-					{
-						LIB_RESOURCE_PATH.Create( Resources, '.$', { label: 'root', value: true } );
-						LIB_RESOURCE_PATH.Create( Resources, '.$.test', { label: 'test' } );
-						LIB_ASSERT.deepStrictEqual( Resources,
-							{
-								".$": { label: 'root', value: true },
-								".$.test": { label: 'test' },
-							} );
-						return;
-					} );
-
-
-				//---------------------------------------------------------------------
-				it( `should not create missing resources`,
-					async function ()
-					{
-						LIB_RESOURCE_PATH.Create( Resources, '.$.test', { label: 'test', value: true } );
-						LIB_ASSERT.deepStrictEqual( Resources,
-							{
-								".$.test": { label: 'test', value: true },
-							} );
-						return;
-					} );
-
-				//---------------------------------------------------------------------
-				it( `should not create multiple missing resources`,
-					async function ()
-					{
-						LIB_RESOURCE_PATH.Create( Resources, '.$.test.value', { label: 'test', value: true } );
-						LIB_ASSERT.deepStrictEqual( Resources,
-							{
-								".$.test.value": { label: 'test', value: true },
-							} );
-						return;
-					} );
-
+				return;
 			} );
 
 	} );
+
