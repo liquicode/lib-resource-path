@@ -71,9 +71,9 @@ The `resource` objects are merged together such that a child's setting will over
 // Example
 Resources =
 [
-	".hello": { label: 'hello', value: true },
-	".hello.world": { label: 'world' },
-	".koo.bar": { label: 'koo bar' },
+	".hello"        : { label: 'hello', test: true },
+	".hello.world"  : { label: 'world' },
+	".koo.bar"      : { label: 'koo bar' },
 ];
 
 item = LibResourcePath.Select( Resources, '.hello' );
@@ -180,9 +180,9 @@ Can be one of: `array` | `map`
 ### Example
 ```js
 Resources = [
-	".hello": { label: 'hello', value: true },
-	".hello.world": { label: 'world' },
-	".koo.bar": { label: 'koo bar' },
+	".hello"        : { label: 'hello', test: true },
+	".hello.world"  : { label: 'world' },
+	".koo.bar"      : { label: 'koo bar' },
 ];
 
 // Get an 'info sparse array'. This should mimic the structure is Resources closely.
@@ -190,7 +190,7 @@ items = LibResourcePath.Getall( Resources, { item_type: 'info', list_type: 'spar
 /*
 items ===
 [
-	{ path: '.hello', parent: '', name: '.hello', info: { label: 'hello', value: true } },
+	{ path: '.hello', parent: '', name: '.hello', info: { label: 'hello', test: true } },
 	{ path: '.hello.world', parent: '.hello', name: '.world', info: { label: 'world' } },
 	{ path: '.koo.bar', parent: '.koo', name: '.bar', info: { label: 'koo bar' } },
 ]
@@ -201,7 +201,7 @@ items = LibResourcePath.Getall( Resources, { item_type: 'info', list_type: 'full
 /*
 items ===
 [
-	{ path: '.hello', parent: '', name: '.hello', info: { label: 'hello', value: true } },
+	{ path: '.hello', parent: '', name: '.hello', info: { label: 'hello', test: true } },
 	{ path: '.hello.world', parent: '.hello', name: '.world', info: { label: 'world' } },
 	{ path: '.koo', parent: '', name: '.koo', info: null },
 	{ path: '.koo.bar', parent: '.koo', name: '.bar', info: { label: 'koo bar' } },
@@ -214,7 +214,7 @@ items = LibResourcePath.Getall( Resources, { item_type: 'info', list_type: 'tree
 items ===
 [
 	{
-		path: '.hello', parent: '', name: '.hello', info: { label: 'hello', value: true },
+		path: '.hello', parent: '', name: '.hello', info: { label: 'hello', test: true },
 		items:
 		[
 			{
