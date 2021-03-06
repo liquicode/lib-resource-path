@@ -16,9 +16,12 @@ exports.Update = Update;
 exports.Delete = Delete;
 exports.Select = Select;
 
+exports.Locate = Locate;
 exports.Header = Header;
 exports.Getall = Getall;
-exports.Locate = Locate;
+
+exports.Branch = Branch;
+// exports.Splice = Splice;
 exports.Copyto = Copyto;
 exports.Moveto = Moveto;
 
@@ -258,6 +261,36 @@ function Select( Resources, Path )
 
 //---------------------------------------------------------------------
 /**
+ * Locates all paths which contain the given resource name.
+ * @param {string} Name The resource name to search for.
+ * @returns {array} Array of resource paths containing `Name`.
+ */
+ function Locate( Resources, Name )
+ {
+	 if ( !Resources ) { throw new Error( `The parameter [Resources] is required.` ); }
+	 if ( !Name || !Name.length ) { Name = ''; }
+ 
+	 let paths = [];
+ 
+	 Object.keys( Resources ).forEach(
+		 key =>
+		 {
+			 let delimiter = key.substr( 0, 1 );
+			 let elements = key.split( delimiter );
+			 if ( elements.includes( Name ) )
+			 {
+				 paths.push( key );
+			 }
+		 } );
+ 
+	 paths.sort();
+ 
+	 return paths;
+ };
+ 
+ 
+ //---------------------------------------------------------------------
+/**
  * Lists all the paths contained in `Resources`.
  * @param {array} Resources The array of resources.
  * @returns {array} Array of resource paths.
@@ -437,35 +470,50 @@ function build_tree_map( items )
 
 //---------------------------------------------------------------------
 /**
- * Locates all paths which contain the given resource name.
- * @param {string} Name The resource name to search for.
- * @returns {array} Array of resource paths containing `Name`.
+ * Creates a copy of `Resources` that contains only the node specified by `Path` and its children.
+ * The specified node will appear at the root of the returned object.
+ * Call this function with an empty `Path` to clone the `Resources` map.
+ * Call this function with a single delimiter for `Path` to clone a namespace within the `Resources` map.
+ * @param {object} Resources The map of resource nodes.
+ * @param {string} Path The path of the node to branch from.
+ * @returns {object} Map of resource nodes.
  */
-function Locate( Resources, Name )
-{
-	if ( !Resources ) { throw new Error( `The parameter [Resources] is required.` ); }
-	if ( !Name || !Name.length ) { Name = ''; }
-
-	let paths = [];
-
-	Object.keys( Resources ).forEach(
-		key =>
-		{
-			let delimiter = key.substr( 0, 1 );
-			let elements = key.split( delimiter );
-			if ( elements.includes( Name ) )
-			{
-				paths.push( key );
-			}
-		} );
-
-	paths.sort();
-
-	return paths;
-};
-
-
-//---------------------------------------------------------------------
+ function Branch( Resources, Path )
+ {
+	 if ( !Resources ) { throw new Error( `The parameter [Resources] is required.` ); }
+	 let items = [];
+	 let paths = Object.keys( Resources );
+	 paths.forEach(
+		 path =>
+		 {
+			 let node = Resources[ path ];
+			 if ( !Path )
+			 {
+				 items.push( node );
+			 }
+			 else if ( ( Path.length === 1 ) && ( path.startsWith( Path ) ) )
+			 {
+				 items.push( node );
+			 }
+			 else 
+			 {
+				 if ( path === Path )
+				 {
+					 items.push( node );
+				 }
+				 else if ( path.startsWith( Path + Path.substr( 0, 1 ) ) )
+				 {
+					 items.push( node );
+				 }
+			 }
+		 }
+	 );
+	 items.sort();
+	 return items;
+ };
+ 
+ 
+ //---------------------------------------------------------------------
 /**
  * Copies a resource from one path to another.
  * This function also copies all child resources.
