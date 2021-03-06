@@ -85,5 +85,20 @@ describe( `010 - Create Tests`,
 				return;
 			} );
 
+		//---------------------------------------------------------------------
+		it( `should not remove existing children`,
+			async function ()
+			{
+				LIB_RESOURCE_PATH.Create( Resources, '.$.test.value', {} );
+				LIB_RESOURCE_PATH.Create( Resources, '.$.test.value.1', {} );
+				LIB_RESOURCE_PATH.Create( Resources, '.$.test.value', { value: true } );
+				LIB_ASSERT.deepStrictEqual( Resources,
+					{
+						".$.test.value": { value: true },
+						".$.test.value.1": {},
+					} );
+				return;
+			} );
+
 	} );
 
