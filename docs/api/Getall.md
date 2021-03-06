@@ -1,51 +1,77 @@
 
 # Getall
 
-### Getall( Resources, Options )
+### **Getall( Resources, Options )**
 
 Gets all data in `Resources`.
 
 The `Options` object controls the content and format of the returned items.
 
-```js
-Options = {
-	item_type: 'info', // The type of items to return.
-	list_type: 'sparse', // The type of list to return.
-	return_type: 'array', // The type of data to return.
-}
-```
 
-***item_type***
+---------------------------------------------------------------------
+---------------------------------------------------------------------
 
-Can be one of: `info` | `select`
 
-- `info`   : return simple objects containing the resource `info` property
-- `select` : return rich objects describing all aspects of the resource
+### **Parameters**
 
-Using `info` will return items containg hierarchical information (`path`, `parent`, and `name`) and the `info` property.
+| Parameter       | Type       | Description
+|-----------------|------------|------------------------------------
+| `Resources`     | object     | The map of resource nodes.
+| `Options`       | object     | The (optional) options settings.
+| returns         | any        | A map or array of resource nodes.
 
-The `select` items contain all of the information that is returned from the `Select` function.
+
+### ***Options.item_type (string)***
+
+The type of item that will be returned.
+
+Can be one of: `'info'` | `'select'`.
+Defaults to `'info'`.
+
+- `'info'`   : return simple objects containing the resource `'info'` property
+- `'select'` : return rich objects describing all aspects of the resource
+
+Using `'info'` will return items containg hierarchical information (`path`, `parent`, and `name`) and the `info` property.
+
+The `'select'` items contain all of the information that is returned from the `Select` function.
 This will include hierarchical properties as well as the final inherited `resource` property.
 
 
-***list_type***
+### ***Options.list_type (string)***
 
-Can be one of: `sparse` | `full` | `tree`
+The type of list that will be returned.
 
-- `sparse` :
-- `full`   :
-- `tree`   :
+Can be one of: `'sparse'` | `'full'` | `'tree'`.
+Defaults to `'sparse'`.
+
+- `'sparse'` : returns a list that contains only defined (not implied) resources
+- `'full'`   : returns a list that contains all resources, including implied nodes
+- `'tree'`   : returns all resources in a hierarchical structure
+
+When getting a `'sparse'` or `'full'` list, you will be getting back a flat map or array.
+An array will be a single array of all resource nodes.
+A map will be an object containing all resource nodes mapped by the resource's `path`.
+
+For a `'tree'` list, you will also get all resources (including implied) but child nodes are stored in the array/map `items` of the parent.
 
 
-***return_type***
+### ***Options.return_type (string)***
 
-Can be one of: `array` | `map`
+The type of value that will be returned.
 
-- `array`  : return value will be an array of objects
-- `map`    : return value will be a single object
+Can be one of: `'array'` | `'map'`.
+Defaults to `'map'`.
+
+- `'array'`  : return value will be an array of objects
+- `'map'`    : return value will be a single object
 
 
-### Example
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+
+
+### **Examples**
+
 ```js
 Resources = [
 	".hello"        : { label: 'hello', test: true },

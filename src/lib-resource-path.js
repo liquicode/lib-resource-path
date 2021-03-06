@@ -265,31 +265,31 @@ function Select( Resources, Path )
  * @param {string} Name The resource name to search for.
  * @returns {array} Array of resource paths containing `Name`.
  */
- function Locate( Resources, Name )
- {
-	 if ( !Resources ) { throw new Error( `The parameter [Resources] is required.` ); }
-	 if ( !Name || !Name.length ) { Name = ''; }
- 
-	 let paths = [];
- 
-	 Object.keys( Resources ).forEach(
-		 key =>
-		 {
-			 let delimiter = key.substr( 0, 1 );
-			 let elements = key.split( delimiter );
-			 if ( elements.includes( Name ) )
-			 {
-				 paths.push( key );
-			 }
-		 } );
- 
-	 paths.sort();
- 
-	 return paths;
- };
- 
- 
- //---------------------------------------------------------------------
+function Locate( Resources, Name )
+{
+	if ( !Resources ) { throw new Error( `The parameter [Resources] is required.` ); }
+	if ( !Name || !Name.length ) { Name = ''; }
+
+	let paths = [];
+
+	Object.keys( Resources ).forEach(
+		key =>
+		{
+			let delimiter = key.substr( 0, 1 );
+			let elements = key.split( delimiter );
+			if ( elements.includes( Name ) )
+			{
+				paths.push( key );
+			}
+		} );
+
+	paths.sort();
+
+	return paths;
+};
+
+
+//---------------------------------------------------------------------
 /**
  * Lists all the paths contained in `Resources`.
  * @param {array} Resources The array of resources.
@@ -322,7 +322,7 @@ function Getall( Resources, Options )
 	Options = Options ? Options : {};
 	Options.item_type = Options.item_type ? Options.item_type : 'info';
 	Options.list_type = Options.list_type ? Options.list_type : 'sparse';
-	Options.return_type = Options.return_type ? Options.return_type : 'array';
+	Options.return_type = Options.return_type ? Options.return_type : 'map';
 	if ( ![ 'info', 'select' ].includes( Options.item_type ) ) { throw new Error( `Invalid option for item_type, must be one of: 'info', or 'select'.` ); }
 	if ( ![ 'sparse', 'full', 'tree' ].includes( Options.list_type ) ) { throw new Error( `Invalid option for list_type, must be one of: 'sparse', 'full', or 'tree'.` ); }
 	if ( ![ 'array', 'map' ].includes( Options.return_type ) ) { throw new Error( `Invalid option for return_type, must be one of: 'array', or 'map'.` ); }
@@ -478,42 +478,31 @@ function build_tree_map( items )
  * @param {string} Path The path of the node to branch from.
  * @returns {object} Map of resource nodes.
  */
- function Branch( Resources, Path )
- {
-	 if ( !Resources ) { throw new Error( `The parameter [Resources] is required.` ); }
-	 let items = [];
-	 let paths = Object.keys( Resources );
-	 paths.forEach(
-		 path =>
-		 {
-			 let node = Resources[ path ];
-			 if ( !Path )
-			 {
-				 items.push( node );
-			 }
-			 else if ( ( Path.length === 1 ) && ( path.startsWith( Path ) ) )
-			 {
-				 items.push( node );
-			 }
-			 else 
-			 {
-				 if ( path === Path )
-				 {
-					 items.push( node );
-				 }
-				 else if ( path.startsWith( Path + Path.substr( 0, 1 ) ) )
-				 {
-					 items.push( node );
-				 }
-			 }
-		 }
-	 );
-	 items.sort();
-	 return items;
- };
- 
- 
- //---------------------------------------------------------------------
+function Branch( Resources, Path )
+{
+	if ( !Resources ) { throw new Error( `The parameter [Resources] is required.` ); }
+	let nodes = {};
+	let paths = Object.keys( Resources );
+	paths.forEach(
+		path =>
+		{
+			let node = Resources[ path ];
+			let include = false;
+			if ( !Path ) { include = true; }
+			else if ( ( Path.length === 1 ) && ( path.startsWith( Path ) ) ) { include = true; }
+			else 
+			{
+				if ( path === Path ) { include = true; }
+				else if ( path.startsWith( Path + Path.substr( 0, 1 ) ) ) { include = true; }
+			}
+			if ( include ) { nodes[ path ] = node; }
+		}
+	);
+	return nodes;
+};
+
+
+//---------------------------------------------------------------------
 /**
  * Copies a resource from one path to another.
  * This function also copies all child resources.
