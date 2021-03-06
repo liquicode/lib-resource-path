@@ -2,7 +2,7 @@
 
 ![logo](media/lib-resource-path-banner-large.png)
 
-# lib-resource-path <small>(v0.0.8)</small>
+# lib-resource-path <small>(v0.0.9)</small>
 
 <hr>
 
