@@ -6,7 +6,7 @@ const LIB_RESOURCE_PATH = require( '../src/lib-resource-path.js' );
 
 
 //---------------------------------------------------------------------
-describe( `060 - Header Tests`,
+describe( `012 - Update Tests`,
 	function ()
 	{
 
@@ -14,14 +14,12 @@ describe( `060 - Header Tests`,
 		//---------------------------------------------------------------------
 		let Resources = null;
 
-
-		//---------------------------------------------------------------------
 		beforeEach( function ()
 		{
 			Resources =
 			{
 				".$": { label: 'root', root: '.$' },
-				".$.test.item": { label: 'test' },
+				".$.test": { label: 'test' },
 				".$.values.1": { value: true },
 				".$.values.2": { value: 3.14 },
 				".$.values.3": { value: 'words' },
@@ -29,24 +27,20 @@ describe( `060 - Header Tests`,
 			return;
 		} );
 
-
 		//---------------------------------------------------------------------
-		it( `should retrieve the header`,
+		it( `should update a single resource`,
 			async function ()
 			{
-				let header = LIB_RESOURCE_PATH.Header( Resources );
-				LIB_ASSERT.ok( header );
-				LIB_ASSERT.strictEqual( header.length, 5 );
-				LIB_ASSERT.deepStrictEqual( header,
-					[
-						'.$',
-						'.$.test.item',
-						'.$.values.1',
-						'.$.values.2',
-						'.$.values.3',
-					] );
+				LIB_RESOURCE_PATH.Update( Resources, '.$.values.2', { value: 42, done: true } );
+				LIB_ASSERT.deepStrictEqual( Resources,
+					{
+						".$": { label: 'root', root: '.$' },
+						".$.test": { label: 'test' },
+						".$.values.1": { value: true },
+						".$.values.2": { value: 42, done: true },
+						".$.values.3": { value: 'words' },
+					} );
 				return;
 			} );
-
 
 	} );

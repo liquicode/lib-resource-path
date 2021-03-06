@@ -6,7 +6,7 @@ const LIB_RESOURCE_PATH = require( '../src/lib-resource-path.js' );
 
 
 //---------------------------------------------------------------------
-describe( `040 - Select Tests`,
+describe( `014 - Select Tests`,
 	function ()
 	{
 
