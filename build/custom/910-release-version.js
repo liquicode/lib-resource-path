@@ -157,6 +157,8 @@ function replace_text( Text, Search, Replace )
 //---------------------------------------------------------------------
 ( async function ()
 {
+	let result = null;
+
 	log_heading( `[910-release-version] starting` );
 	log_muted( `Running in: ${process.cwd()}` );
 
@@ -186,7 +188,7 @@ function replace_text( Text, Search, Replace )
 	log_blank_line();
 	log_heading( 'Preflight: Runs tests and store output in docs/external/testing-output.md' );
 	{
-		let result = await execute_command( `npx mocha -u bdd tests/*.js --timeout 0 --slow 10` );
+		result = await execute_command( `npx mocha -u bdd tests/*.js --timeout 0 --slow 10` );
 		path = LIB_PATH.join( process.cwd(), 'docs', 'external', 'testing-output.md' );
 		LIB_FS.writeFileSync( path,
 			"# Testing Output\n\n\n"
@@ -231,10 +233,19 @@ function replace_text( Text, Search, Replace )
 	log_heading( 'Do final staging before version tag' );
 	await execute_command( `git add .` );
 
-	// - Do final commit: `git commit -m "Finalization for vX.Y.Z"`
+	// - Get project status
 	log_blank_line();
-	log_heading( 'Do final commit before version tag' );
-	await execute_command( `git commit -m "Finalization for v${PACKAGE.version}"` );
+	log_heading( 'Get project status' );
+	result = await execute_command( `git status` );
+	let working_tree_clean = result.stdout.includes( 'working tree clean' );
+
+	// - Do final commit: `git commit -m "Finalization for vX.Y.Z"`
+	if ( !working_tree_clean )
+	{
+		log_blank_line();
+		log_heading( 'Do final commit before version tag' );
+		await execute_command( `git commit -m "Finalization for v${PACKAGE.version}"` );
+	}
 
 	// - Do final push: `git push origin master`
 	log_blank_line();
