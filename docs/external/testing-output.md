@@ -4,7 +4,7 @@
 ```
 
 
-  010 - Create Tests
+  011 - Create Tests
     ✓ should create a resource from a missing object info
     ✓ should create a resource from an empty object
     ✓ should create a resource from a simple object
@@ -13,17 +13,17 @@
     ✓ should not create multiple missing resources
     ✓ should not remove existing children
 
-  020 - Update Tests
+  012 - Update Tests
     ✓ should update a single resource
 
-  030 - Delete Tests
+  013 - Delete Tests
     ✓ should remove a single resource
-    ✓ should remove a child resource
+    ✓ should not remove a child resource
     ✓ should do nothing for a non-existant resource
 
-  040 - Select Tests
-    ✓ should retrieve empty path (root resource info)
-    ✓ should retrieve '.' (namespace's root info)
+  014 - Select Tests
+    ✓ should list namespaces for root path
+    ✓ should list top level nodes for namespace
     ✓ should retrieve '.$'
     ✓ should retrieve '.$.test'
     ✓ should retrieve '.$.values'
@@ -31,15 +31,14 @@
     ✓ should retrieve '.$.values.2'
     ✓ should retrieve '.$.values.3'
 
-  050 - Locate Tests
-    ✓ should locate all resources by default (empty path)
-    ✓ should require a name (single delimiter)
+  021 - Locate Tests
+    ✓ should locate a resource
     ✓ should locate a resource name accross namespaces
 
-  060 - Header Tests
+  022 - Header Tests
     ✓ should retrieve the header
 
-  070 - Getall Tests
+  023 - Getall Tests
     ✓ should retrieve items with:    info      sparse    array
     ✓ should retrieve items with:    select    sparse    array
     ✓ should retrieve items with:    info      full      array
@@ -53,13 +52,18 @@
     ✓ should retrieve items with:    info      tree      map
     ✓ should retrieve items with:    select    tree      map
 
-  080 - Copyto Tests
+  031 - Branch Tests
+    ✓ should clone the resources map
+    ✓ should clone a namespace
+    ✓ should clone a branch
+
+  032 - Copyto Tests
     ✓ should copy a resource
     ✓ should copy child resources
     ✓ should copy root resources
     ✓ should overwrite existing resources
 
-  090 - Moveto Tests
+  033 - Moveto Tests
     ✓ should move a resource
     ✓ should move child resources
     ✓ should move root resources
@@ -67,7 +71,7 @@
     ✓ should rename the delimiter
 
 
-  44 passing (18ms)
+  46 passing (18ms)
 
 
 ```

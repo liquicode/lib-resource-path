@@ -1,5 +1,5 @@
 
-# lib-resource-path (v0.0.10)
+# lib-resource-path (v0.0.11)
 
 
 ---------------------------------------------------------------------
@@ -28,12 +28,12 @@ const LibResourcePath = require( '@liquicode/lib-resource-path' );
 
 // An array defining three resource nodes.
 let Resources =
-{
+[
 	// Resource Path  :  Resource Value
 	".hello"          : { label: 'hello', test: true },
 	".hello.world"    : { label: 'world' },
 	".koo.bar"        : { label: 'koo bar' },
-};
+];
 
 // Get information about a particular resource node.
 item = LibResourcePath.Select( Resources, '.hello.world' );
