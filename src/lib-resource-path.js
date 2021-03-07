@@ -28,48 +28,26 @@ exports.Moveto = Moveto;
 
 //---------------------------------------------------------------------
 /**
- * Creates a resource and initializes it with values from `Info`.
+ * Creates or overwrite a resource and initializes it with values from `Resource`.
  * This function works only on a single resource and has no effect upon child resources.
  * This function will overwrite any existing resource with the same path.
- * @param {array} Resources The array of resources.
+ * @param {object} Resources The map of resource nodes.
  * @param {string} Path The path of the resource.
- * @param {object} Info A resource object.
- * @param {object} Options An options object:
- * 		- CreatePaths {boolean} : When `true`, also creates any intermediate parent paths that do not already exist.
- * 			This option is optional and defaults to `false`.
+ * @param {object} Resource A resource object.
  * @returns {object} Returns the updated `Resources` object.
  */
-function Create( Resources, Path, Info, Options )
+function Create( Resources, Path, Resource )
 {
+	// Validate Parameters
 	if ( !Resources ) { throw new Error( `The parameter [Resources] is required.` ); }
-	if ( !Path || !Path.length ) { throw new Error( `The parameter [Path] is required.` ); }
-	if ( Path.length < 2 ) { throw new Error( `The [Path] parameter contains an invalid value.` ); }
-	if ( typeof Info === 'undefined' ) { Info = {}; }
+	Path = Path ? Path : '';
+	Resource = Resource ? Resource : {};
 
-	Options = Options ? Options : {};
-	Options.CreatePaths = Options.CreatePaths ? Options.CreatePaths : false;
-
-	if ( Options.CreatePaths )
-	{
-		// Get the path delimiter.
-		let path_delimiter = Path.substr( 0, 1 );
-
-		// Parse the path.
-		let elements = Path.split( path_delimiter );
-		elements.shift(); // Remove the leading empty entry.
-		elements.pop(); // Remove the last entry, which is created below.
-
-		// Build the path.
-		let path = '';
-		for ( let index = 0; index < elements.length; index++ )
-		{
-			// Get the resource, create if needed.
-			path += path_delimiter + elements[ index ];
-		}
-	}
+	if ( Path.length === 0 ) { throw new Error( `This function does not operate on the path root. The parameter [Path] is required.` ); }
+	if ( Path.length === 1 ) { throw new Error( `This function does not operate on namespaces. The parameter [Path] is required.` ); }
 
 	// Set the resource info.
-	Resources[ Path ] = JSON.parse( JSON.stringify( Info ) );
+	Resources[ Path ] = JSON.parse( JSON.stringify( Resource ) );
 
 	// Return the reources.
 	return Resources;
@@ -80,23 +58,14 @@ function Create( Resources, Path, Info, Options )
 /**
  * Updates a resource with values from `Info`.
  * This function works only on a single resource and has no effect upon child resources.
- * @param {array} Resources The array of resources.
+ * @param {object} Resources The map of resource nodes.
  * @param {string} Path The path of the resource.
- * @param {object} Info A resource object.
+ * @param {object} Resource A resource object.
  * @returns {object} Returns the updated `Resources` object.
  */
-function Update( Resources, Path, Info )
+function Update( Resources, Path, Resource )
 {
-	if ( !Resources ) { throw new Error( `The parameter [Resources] is required.` ); }
-	if ( !Path || !Path.length ) { throw new Error( `The parameter [Path] is required.` ); }
-	if ( Path.length < 2 ) { throw new Error( `The [Path] parameter contains an invalid value.` ); }
-	if ( typeof Info === 'undefined' ) { Info = {}; }
-
-	// Update the resource info.
-	Resources[ Path ] = JSON.parse( JSON.stringify( Info ) );
-
-	// Return the reources.
-	return Resources;
+	return Create( Resources, Path, Resource );
 };
 
 
@@ -104,24 +73,23 @@ function Update( Resources, Path, Info )
 /**
  * Deletes a specific resource.
  * This function also deletes all child resources.
- * @param {array} Resources The array of resources.
+ * @param {array} Resources The map of resource nodes.
  * @param {string} Path The path of the resource.
  * @returns {object} Returns the updated `Resources` object.
  */
 function Delete( Resources, Path )
 {
+	// Validate Parameters
 	if ( !Resources ) { throw new Error( `The parameter [Resources] is required.` ); }
-	if ( !Path || !Path.length ) { throw new Error( `The parameter [Path] is required.` ); }
-	if ( Path.length < 2 ) { throw new Error( `The [Path] parameter contains an invalid value.` ); }
+	Path = Path ? Path : '';
 
-	// Remove the path.
-	let keys = Object.keys( Resources );
-	for ( let index = 0; index < keys.length; index++ )
+	if ( Path.length === 0 ) { throw new Error( `This function does not operate on the path root. The parameter [Path] is required.` ); }
+	if ( Path.length === 1 ) { throw new Error( `This function does not operate on namespaces. The parameter [Path] is required.` ); }
+
+	// Remove the node.
+	if ( typeof Resources[ Path ] !== 'undefined' )
 	{
-		if ( keys[ index ].startsWith( Path ) )
-		{
-			delete Resources[ keys[ index ] ];
-		}
+		delete Resources[ Path ];
 	}
 
 	// Return the reources.
@@ -133,50 +101,49 @@ function Delete( Resources, Path )
 /**
  * Selects a specific resource and returns information on it.
  * This function works only on a single resource and has no effect upon child resources.
- * @param {array} Resources The array of resources.
+ * @param {object} Resources The map of resource nodes.
  * @param {string} Path The path of the resource.
  * @returns {object} An object containing information about the resource:
  *		- path : the resource path of this resource.
- *		- parent : the resource path of the parent.
- *		- name : The name of this resource (used in path).
- *		- resource_info : The info object defined by this resource.
- *		- inherited_info : The info object defined by this resource and all of its ancestors.
+ *		- parent : the parent's resource path.
+ *		- name : The name of this resource (used in path, no delimiter).
+ *		- info : The info object defined by this resource.
+ *		- resource : The info object defined by this resource and all of its ancestors.
  *		- children : An array child resource names.
  */
 function Select( Resources, Path )
 {
+	// Validate Parameters
 	if ( !Resources ) { throw new Error( `The parameter [Resources] is required.` ); }
-	// if ( !Path || !Path.length ) { throw new Error( `The parameter [Path] is required.` ); }
+	Path = Path ? Path : '';
 
 	// Build the resource info.
-	let resource_detail =
+	let item =
 	{
 		path: Path,			// The path of this resource
 		parent: '',			// The path of the parent resource
 		name: '',			// The name of this resource
 		info: null,			// The info for this resource
 		exists: false,		// True if this resource exists
-		resource: {},		// The info inherited from the parent
+		inherited: {},		// The info inherited from the parent
 		children: [],		// Names of child resources
 	};
 
-	// Return just the root's children when no path is given.
-	if ( !Path || ( Path.length === 0 ) ) 
+	// For root path, return the namespaces.
+	if ( Path.length === 0 ) 
 	{
-		resource_detail.path = '';
-		resource_detail.name = '';
+		item.path = '';
+		item.name = '';
 		Object.keys( Resources ).forEach(
 			key =>
 			{
 				let delimiter = key.substr( 0, 1 );
-				let entries = key.split( delimiter );
-				let name = delimiter + entries[ 1 ];
-				if ( !resource_detail.children.includes( name ) )
+				if ( !item.children.includes( delimiter ) )
 				{
-					resource_detail.children.push( name );
+					item.children.push( delimiter );
 				}
 			} );
-		return resource_detail;
+		return item;
 	}
 
 	// Get the path delimiter.
@@ -185,8 +152,8 @@ function Select( Resources, Path )
 	// Return just the namespaces's children when only a delimiter is given.
 	if ( Path.length === 1 ) 
 	{
-		resource_detail.path = '';
-		resource_detail.name = Path;
+		item.path = '';
+		item.name = path_delimiter;
 		Object.keys( Resources ).forEach(
 			key =>
 			{
@@ -194,14 +161,15 @@ function Select( Resources, Path )
 				if ( delimiter === path_delimiter )
 				{
 					let entries = key.split( delimiter );
-					let name = delimiter + entries[ 1 ];
-					if ( !resource_detail.children.includes( name ) )
+					// let name = delimiter + entries[ 1 ];
+					let name = entries[ 1 ];
+					if ( !item.children.includes( name ) )
 					{
-						resource_detail.children.push( name );
+						item.children.push( name );
 					}
 				}
 			} );
-		return resource_detail;
+		return item;
 	}
 
 	// Parse the path.
@@ -211,27 +179,28 @@ function Select( Resources, Path )
 	// Build the path and info while traversing the path.
 	while ( elements.length > 1 )
 	{
-		resource_detail.parent += path_delimiter + elements[ 0 ];
-		let resource_info = Resources[ resource_detail.parent ];
+		item.parent += path_delimiter + elements[ 0 ];
+		let resource_info = Resources[ item.parent ];
 		if ( resource_info )
 		{
 			// Copy the ancestor resource info.
-			Object.keys( resource_info ).forEach( key => resource_detail.resource[ key ] = resource_info[ key ] );
+			Object.keys( resource_info ).forEach( key => item.inherited[ key ] = resource_info[ key ] );
 		}
 		elements.shift();
 	}
 
 	// Set the name.
-	resource_detail.name = path_delimiter + elements[ 0 ];
+	// resource_detail.name = path_delimiter + elements[ 0 ];
+	item.name = elements[ 0 ];
 
 	// Set the resource info.
 	let resource_info = Resources[ Path ];
 	if ( typeof resource_info !== 'undefined' ) 
 	{
-		resource_detail.info = {};
-		resource_detail.exists = true;
-		Object.keys( resource_info ).forEach( key => resource_detail.resource[ key ] = resource_info[ key ] );
-		Object.keys( resource_info ).forEach( key => resource_detail.info[ key ] = resource_info[ key ] );
+		item.info = {};
+		item.exists = true;
+		Object.keys( resource_info ).forEach( key => item.inherited[ key ] = resource_info[ key ] );
+		Object.keys( resource_info ).forEach( key => item.info[ key ] = resource_info[ key ] );
 	}
 
 	// Get the children.
@@ -245,30 +214,33 @@ function Select( Resources, Path )
 				sub_entries.shift(); // Discard the leading empty entry.
 				if ( sub_entries.length > 0 )
 				{
-					let name = path_delimiter + sub_entries[ 0 ];
-					if ( !resource_detail.children.includes( name ) )
+					// let name = path_delimiter + sub_entries[ 0 ];
+					let name = sub_entries[ 0 ];
+					if ( !item.children.includes( name ) )
 					{
-						resource_detail.children.push( name );
+						item.children.push( name );
 					}
 				}
 			}
 		} );
 
-	// Return the resource info.
-	return resource_detail;
+	// Return the resource item.
+	return item;
 };
 
 
 //---------------------------------------------------------------------
 /**
  * Locates all paths which contain the given resource name.
+ * @param {object} Resources The map of resource nodes.
  * @param {string} Name The resource name to search for.
- * @returns {array} Array of resource paths containing `Name`.
+ * @returns {array} Array of resource path string containing `Name`.
  */
 function Locate( Resources, Name )
 {
+	// Validate Parameters
 	if ( !Resources ) { throw new Error( `The parameter [Resources] is required.` ); }
-	if ( !Name || !Name.length ) { Name = ''; }
+	if ( !Name ) { throw new Error( `The parameter [Name] is required.` ); }
 
 	let paths = [];
 
@@ -290,24 +262,51 @@ function Locate( Resources, Name )
 
 
 //---------------------------------------------------------------------
+function path_includes( path, item_path )
+{
+	if ( path.length === 0 ) { return true; }
+	else if ( ( path.length === 1 ) && item_path.startsWith( path ) ) { return true; }
+	else
+	{
+		if ( item_path === path ) { return true; }
+		else if ( item_path.startsWith( path + path.substr( 0, 1 ) ) ) { return true; }
+	}
+	return false;
+}
+
+
+//---------------------------------------------------------------------
 /**
  * Lists all the paths contained in `Resources`.
- * @param {array} Resources The array of resources.
- * @returns {array} Array of resource paths.
+ * @param {object} Resources The map of resource nodes.
+ * @param {string} Path The path of the resource.
+ * @returns {array} Array of resource path string.
  */
-function Header( Resources )
+function Header( Resources, Path )
 {
+	// Validate Parameters
 	if ( !Resources ) { throw new Error( `The parameter [Resources] is required.` ); }
-	let header = Object.keys( Resources );
-	header.sort();
-	return header;
+	Path = Path ? Path : '';
+
+	let paths = [];
+	Object.keys( Resources ).forEach(
+		key =>
+		{
+			if ( path_includes( Path, key ) )
+			{
+				paths.push( key );
+			}
+		} );
+	paths.sort();
+
+	return paths;
 };
 
 
 //---------------------------------------------------------------------
 /**
  * Lists all paths and info contained in `Resources`.
- * @param {array} Resources The array of resources.
+ * @param {array} Resources The map of resource nodes.
  * @param {object} Options An (optional) options object.
  * - item_type: The type of items to return. Can be one of: 'info' | 'select'.
  * - list_type: The type of list to return. Can be one of: 'sparse' | 'full' | 'tree'
@@ -316,6 +315,7 @@ function Header( Resources )
  */
 function Getall( Resources, Options )
 {
+	// Validate Parameters
 	if ( !Resources ) { throw new Error( `The parameter [Resources] is required.` ); }
 
 	// Sort out the options.
@@ -393,8 +393,8 @@ function Getall( Resources, Options )
 	// Check to convert a flat list to a tree list
 	if ( Options.list_type === 'tree' )
 	{
-		if ( Options.return_type === 'array' ) { items = build_tree_array( items ); }
-		else if ( Options.return_type === 'map' ) { items = build_tree_map( items ); }
+		if ( Options.return_type === 'array' ) { items = build_tree_array( Resources, items, Options ); }
+		else if ( Options.return_type === 'map' ) { items = build_tree_map( Resources, items, Options ); }
 	}
 
 	// Return the items.
@@ -419,30 +419,55 @@ function locate_tree_array_item( tree_items, path )
 
 
 //---------------------------------------------------------------------
-function build_tree_array( items )
+function build_tree_array( Resources, items, Options )
 {
+	// ASSUMPTION: items is sorted.
+
 	let flat_items = JSON.parse( JSON.stringify( items ) );
 	let tree_items = [];
 	flat_items.forEach(
 		item =>
 		{
-			item.items = [];
+			// Get the namespace.
+			let namespace = item.path.substr( 0, 1 );
+			let namespace_item = tree_items.find( item => ( ( !item.path ) && ( item.name === namespace ) ) );
+			if ( !namespace_item )
+			{
+				if ( Options.item_type === 'info' )
+				{
+					namespace_item = {
+						path: '',
+						parent: '',
+						name: namespace,
+						info: null,
+					};
+				}
+				else if ( Options.item_type === 'select' )
+				{
+					namespace_item = Select( Resources, namespace );
+				}
+				tree_items.push( namespace_item );
+				namespace_item.items = [];
+			}
+
 			if ( item.parent === '' )
 			{
-				tree_items.push( item );
+				namespace_item.items.push( item );
 			}
 			else
 			{
-				let parent_item = locate_tree_array_item( tree_items, item.parent );
+				let parent_item = locate_tree_array_item( namespace_item.items, item.parent );
 				parent_item.items.push( item );
 			}
+			item.items = [];
+			return;
 		} );
 	return tree_items;
 }
 
 
 //---------------------------------------------------------------------
-function build_tree_map( items )
+function build_tree_map( Resources, items, Options )
 {
 	let flat_items = JSON.parse( JSON.stringify( items ) );
 	let tree_items = {};
@@ -450,18 +475,43 @@ function build_tree_map( items )
 		key =>
 		{
 			let item = flat_items[ key ];
+			let parent_items = tree_items;
 
-			let delimiter = item.parent.substr( 0, 1 );
-			let elements = item.parent.split( delimiter );
+			// Get the namespace
+			let namespace = key.substr( 0, 1 );
+			if ( typeof parent_items[ namespace ] === 'undefined' )
+			{
+				if ( Options.item_type === 'info' )
+				{
+					parent_items[ namespace ] = {
+						path: '',
+						parent: '',
+						name: namespace,
+						info: null,
+					};
+				}
+				else if ( Options.item_type === 'select' )
+				{
+					parent_items[ namespace ] = Select( Resources, namespace );
+				}
+				parent_items[ namespace ].items = {};
+			}
+			parent_items = parent_items[ namespace ].items;
+
+			// Walk down the path.
+			let elements = item.parent.split( namespace );
 			elements.shift(); // Remove leading empty entry.
-
-			let parent_item = tree_items;
 			elements.forEach(
 				( element, element_index ) =>
 				{
-					parent_item = parent_item[ delimiter + element ];
+					if ( typeof parent_items[ element ] === 'undefined' )
+					{
+						debugger;
+					}
+					parent_items = parent_items[ element ].items;
 				} );
-			parent_item[ item.name ] = item;
+			parent_items[ item.name ] = item;
+			parent_items[ item.name ].items = {};
 
 		} );
 	return tree_items;
@@ -480,24 +530,20 @@ function build_tree_map( items )
  */
 function Branch( Resources, Path )
 {
+	// Validate Parameters
 	if ( !Resources ) { throw new Error( `The parameter [Resources] is required.` ); }
+	Path = Path ? Path : '';
+
 	let nodes = {};
-	let paths = Object.keys( Resources );
-	paths.forEach(
-		path =>
+	Object.keys( Resources ).forEach(
+		key =>
 		{
-			let node = Resources[ path ];
-			let include = false;
-			if ( !Path ) { include = true; }
-			else if ( ( Path.length === 1 ) && ( path.startsWith( Path ) ) ) { include = true; }
-			else 
+			if ( path_includes( Path, key ) )
 			{
-				if ( path === Path ) { include = true; }
-				else if ( path.startsWith( Path + Path.substr( 0, 1 ) ) ) { include = true; }
+				nodes[ key ] = Resources[ key ];
 			}
-			if ( include ) { nodes[ path ] = node; }
-		}
-	);
+		} );
+
 	return nodes;
 };
 
@@ -507,18 +553,19 @@ function Branch( Resources, Path )
  * Copies a resource from one path to another.
  * This function also copies all child resources.
  * This function will overwrite any resources that exist with the same new name.
- * @param {array} Resources The array of resources.
+ * @param {array} Resources The map of resource nodes.
  * @param {string} Path The resource path.
  * @param {string} NewPath The new resource path.
  * @returns {object} Returns the updated `Resources` object.
  */
 function Copyto( Resources, Path, NewPath )
 {
+	// Validate Parameters
 	if ( !Resources ) { throw new Error( `The parameter [Resources] is required.` ); }
-	if ( !Path || !Path.length ) { throw new Error( `The parameter [Path] is required.` ); }
-	if ( Path.length < 2 ) { throw new Error( `The [Path] parameter contains an invalid value.` ); }
-	if ( !NewPath || !NewPath.length ) { throw new Error( `The parameter [NewPath] is required.` ); }
-	if ( NewPath.length < 2 ) { throw new Error( `The [NewPath] parameter contains an invalid value.` ); }
+	Path = Path ? Path : '';
+	NewPath = NewPath ? NewPath : '';
+
+	if ( Path === NewPath ) { throw new Error( `The parameters [Path] and [NewPath] cannot be the same path.` ); }
 
 	let path_delimiter = Path.substr( 0, 1 );
 	let newpath_delimiter = NewPath.substr( 0, 1 );
@@ -527,7 +574,7 @@ function Copyto( Resources, Path, NewPath )
 	Object.keys( Resources ).forEach(
 		key =>
 		{
-			if ( key.startsWith( Path ) )
+			if ( path_includes( Path, key ) )
 			{
 				let childpath = key.substr( Path.length );
 				let childpath_elements = childpath.split( path_delimiter );
@@ -549,18 +596,19 @@ function Copyto( Resources, Path, NewPath )
  * Moves a resource from one path to another.
  * This function also moves all child resources.
  * This function will overwrite any resources that exist with the same new name.
- * @param {array} Resources The array of resources.
+ * @param {array} Resources The map of resource nodes.
  * @param {string} Path The resource path.
  * @param {string} NewPath The new resource path.
  * @returns {object} Returns the updated `Resources` object.
  */
 function Moveto( Resources, Path, NewPath )
 {
+	// Validate Parameters
 	if ( !Resources ) { throw new Error( `The parameter [Resources] is required.` ); }
-	if ( !Path || !Path.length ) { throw new Error( `The parameter [Path] is required.` ); }
-	if ( Path.length < 2 ) { throw new Error( `The [Path] parameter contains an invalid value.` ); }
-	if ( !NewPath || !NewPath.length ) { throw new Error( `The parameter [NewPath] is required.` ); }
-	if ( NewPath.length < 2 ) { throw new Error( `The [NewPath] parameter contains an invalid value.` ); }
+	Path = Path ? Path : '';
+	NewPath = NewPath ? NewPath : '';
+
+	if ( Path === NewPath ) { throw new Error( `The parameters [Path] and [NewPath] cannot be the same path.` ); }
 
 	let path_delimiter = Path.substr( 0, 1 );
 	let newpath_delimiter = NewPath.substr( 0, 1 );
@@ -569,7 +617,7 @@ function Moveto( Resources, Path, NewPath )
 	Object.keys( Resources ).forEach(
 		key =>
 		{
-			if ( key.startsWith( Path ) )
+			if ( path_includes( Path, key ) )
 			{
 				let childpath = key.substr( Path.length );
 				let childpath_elements = childpath.split( path_delimiter );
