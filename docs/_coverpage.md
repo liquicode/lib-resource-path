@@ -1,6 +1,6 @@
 <!-- _coverpage.md -->
 
-![logo](media/lib-resource-path-banner-large.png)
+![logo](media/template-lib-icon.png)
 
 # lib-resource-path <small>(v0.0.12)</small>
 
