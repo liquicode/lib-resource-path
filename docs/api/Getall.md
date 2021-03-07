@@ -50,9 +50,12 @@ Defaults to `'sparse'`.
 
 When getting a `'sparse'` or `'full'` list, you will be getting back a flat map or array.
 An array will be a single array of all resource nodes.
-A map will be an object containing all resource nodes mapped by the resource's `path`.
+A map will be an object containing all resource nodes mapped by the resource's `path` property.
 
-For a `'tree'` list, you will also get all resources (including implied) but child nodes are stored in the array/map `items` of the parent.
+For a `'tree'` list, you will also get all resources (including implied).
+When returning the function result as an array, child nodes are stored in a sub-array `items` of the parent.
+When returning the function result as a map, child nodes are stored in a sub-object `items` of the parent.
+Also, the top level nodes of the return value will be all the namespaces found in `Resources`.
 
 
 ### ***Options.return_type (string)***
@@ -73,11 +76,12 @@ Defaults to `'map'`.
 ### **Examples**
 
 ```js
-Resources = [
+Resources = 
+{
 	".hello"        : { label: 'hello', test: true },
 	".hello.world"  : { label: 'world' },
 	".koo.bar"      : { label: 'koo bar' },
-];
+};
 
 // Get an 'info sparse array'. This should mimic the structure is Resources closely.
 items = LibResourcePath.Getall( Resources, { item_type: 'info', list_type: 'sparse', return_type: 'array'} );

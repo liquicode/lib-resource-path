@@ -28,7 +28,7 @@ describe( `014 - Select Tests`,
 		} );
 
 		//---------------------------------------------------------------------
-		it( `should retrieve empty path (root resource info)`,
+		it( `should list namespaces for root path`,
 			async function ()
 			{
 				let resource = LIB_RESOURCE_PATH.Select( Resources, '' );
@@ -39,14 +39,14 @@ describe( `014 - Select Tests`,
 						name: '',
 						info: null,
 						exists: false,
-						resource: {},
-						children: [ '.$' ],
+						inherited: {},
+						children: [ '.' ],
 					} );
 				return;
 			} );
 
 		//---------------------------------------------------------------------
-		it( `should retrieve '.' (namespace's root info)`,
+		it( `should list top level nodes for namespace`,
 			async function ()
 			{
 				let resource = LIB_RESOURCE_PATH.Select( Resources, '.' );
@@ -57,8 +57,8 @@ describe( `014 - Select Tests`,
 						name: '.',
 						info: null,
 						exists: false,
-						resource: {},
-						children: [ '.$' ],
+						inherited: {},
+						children: [ '$' ],
 					} );
 				return;
 			} );
@@ -72,11 +72,11 @@ describe( `014 - Select Tests`,
 					{
 						path: '.$',
 						parent: '',
-						name: '.$',
+						name: '$',
 						info: { label: 'root', root: '.$' },
 						exists: true,
-						resource: { label: 'root', root: '.$' },
-						children: [ '.test', '.values' ],
+						inherited: { label: 'root', root: '.$' },
+						children: [ 'test', 'values' ],
 					} );
 				return;
 			} );
@@ -90,10 +90,10 @@ describe( `014 - Select Tests`,
 					{
 						path: '.$.test',
 						parent: '.$',
-						name: '.test',
+						name: 'test',
 						info: { label: 'test' },
 						exists: true,
-						resource: { label: 'test', root: '.$' },
+						inherited: { label: 'test', root: '.$' },
 						children: [],
 					} );
 				return;
@@ -108,11 +108,11 @@ describe( `014 - Select Tests`,
 					{
 						path: '.$.values',
 						parent: '.$',
-						name: '.values',
+						name: 'values',
 						info: null,
 						exists: false,
-						resource: { label: 'root', root: '.$' },
-						children: [ '.1', '.2', '.3' ],
+						inherited: { label: 'root', root: '.$' },
+						children: [ '1', '2', '3' ],
 					} );
 				return;
 			} );
@@ -126,10 +126,10 @@ describe( `014 - Select Tests`,
 					{
 						path: '.$.values.1',
 						parent: '.$.values',
-						name: '.1',
+						name: '1',
 						info: { value: true },
 						exists: true,
-						resource: { label: 'root', root: '.$', value: true },
+						inherited: { label: 'root', root: '.$', value: true },
 						children: [],
 					} );
 				return;
@@ -144,10 +144,10 @@ describe( `014 - Select Tests`,
 					{
 						path: '.$.values.2',
 						parent: '.$.values',
-						name: '.2',
+						name: '2',
 						info: { value: 3.14 },
 						exists: true,
-						resource: { label: 'root', root: '.$', value: 3.14 },
+						inherited: { label: 'root', root: '.$', value: 3.14 },
 						children: [],
 					} );
 				return;
@@ -162,10 +162,10 @@ describe( `014 - Select Tests`,
 					{
 						path: '.$.values.3',
 						parent: '.$.values',
-						name: '.3',
+						name: '3',
 						info: { value: 'words' },
 						exists: true,
-						resource: { label: 'root', root: '.$', value: 'words' },
+						inherited: { label: 'root', root: '.$', value: 'words' },
 						children: [],
 					} );
 				return;

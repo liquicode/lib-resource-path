@@ -33,11 +33,11 @@ The `resource` objects are merged together such that a child's setting will over
 ```js
 // Example
 Resources =
-[
+{
 	".hello"        : { label: 'hello', test: true },
 	".hello.world"  : { label: 'world' },
 	".koo.bar"      : { label: 'koo bar' },
-];
+};
 
 item = LibResourcePath.Select( Resources, '.hello' );
 /*

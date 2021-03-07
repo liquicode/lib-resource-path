@@ -45,13 +45,13 @@ describe( `023 - Getall Tests`,
 				LIB_ASSERT.strictEqual( items.length, 5 );
 				LIB_ASSERT.deepStrictEqual( items,
 					[
-						{ path: '.$', parent: '', name: '.$', info: { label: 'root', root: '.$' } },
-						// { path: '.$.test', parent: '.$', name: '.test', info: null },
-						{ path: '.$.test.item', parent: '.$.test', name: '.item', info: { label: 'test' } },
-						// { path: '.$.values', parent: '.$', name: '.values', info: null },
-						{ path: '.$.values.1', parent: '.$.values', name: '.1', info: { value: true } },
-						{ path: '.$.values.2', parent: '.$.values', name: '.2', info: { value: 3.14 } },
-						{ path: '.$.values.3', parent: '.$.values', name: '.3', info: { value: 'words' } },
+						{ path: '.$', parent: '', name: '$', info: { label: 'root', root: '.$' } },
+						// { path: '.$.test', parent: '.$', name: 'test', info: null },
+						{ path: '.$.test.item', parent: '.$.test', name: 'item', info: { label: 'test' } },
+						// { path: '.$.values', parent: '.$', name: 'values', info: null },
+						{ path: '.$.values.1', parent: '.$.values', name: '1', info: { value: true } },
+						{ path: '.$.values.2', parent: '.$.values', name: '2', info: { value: 3.14 } },
+						{ path: '.$.values.3', parent: '.$.values', name: '3', info: { value: 'words' } },
 					] );
 				return;
 			} );
@@ -68,32 +68,32 @@ describe( `023 - Getall Tests`,
 				LIB_ASSERT.deepStrictEqual( items,
 					[
 						{
-							path: '.$', parent: '', name: '.$', info: { label: 'root', root: '.$' },
-							exists: true, children: [ '.test', '.values' ], resource: { label: 'root', root: '.$' },
+							path: '.$', parent: '', name: '$', info: { label: 'root', root: '.$' },
+							exists: true, children: [ 'test', 'values' ], inherited: { label: 'root', root: '.$' },
 						},
 						// {
-						// 	path: '.$.test', parent: '.$', name: '.test', info: null,
-						// 	exists: false, children: [ '.item' ], resource: { label: 'root', root: '.$' },
+						// 	path: '.$.test', parent: '.$', name: 'test', info: null,
+						// 	exists: false, children: [ 'item' ], inherited: { label: 'root', root: '.$' },
 						// },
 						{
-							path: '.$.test.item', parent: '.$.test', name: '.item', info: { label: 'test' },
-							exists: true, children: [], resource: { label: 'test', root: '.$' },
+							path: '.$.test.item', parent: '.$.test', name: 'item', info: { label: 'test' },
+							exists: true, children: [], inherited: { label: 'test', root: '.$' },
 						},
 						// {
-						// 	path: '.$.values', parent: '.$', name: '.values', info: null,
-						// 	exists: false, children: [ '.1', '.2', '.3' ], resource: { label: 'root', root: '.$' },
+						// 	path: '.$.values', parent: '.$', name: 'values', info: null,
+						// 	exists: false, children: [ '1', '2', '3' ], inherited: { label: 'root', root: '.$' },
 						// },
 						{
-							path: '.$.values.1', parent: '.$.values', name: '.1', info: { value: true },
-							exists: true, children: [], resource: { label: 'root', root: '.$', value: true },
+							path: '.$.values.1', parent: '.$.values', name: '1', info: { value: true },
+							exists: true, children: [], inherited: { label: 'root', root: '.$', value: true },
 						},
 						{
-							path: '.$.values.2', parent: '.$.values', name: '.2', info: { value: 3.14 },
-							exists: true, children: [], resource: { label: 'root', root: '.$', value: 3.14 },
+							path: '.$.values.2', parent: '.$.values', name: '2', info: { value: 3.14 },
+							exists: true, children: [], inherited: { label: 'root', root: '.$', value: 3.14 },
 						},
 						{
-							path: '.$.values.3', parent: '.$.values', name: '.3', info: { value: 'words' },
-							exists: true, children: [], resource: { label: 'root', root: '.$', value: 'words' },
+							path: '.$.values.3', parent: '.$.values', name: '3', info: { value: 'words' },
+							exists: true, children: [], inherited: { label: 'root', root: '.$', value: 'words' },
 						},
 					] );
 				return;
@@ -109,13 +109,13 @@ describe( `023 - Getall Tests`,
 				LIB_ASSERT.ok( items );
 				LIB_ASSERT.deepStrictEqual( items,
 					[
-						{ path: '.$', parent: '', name: '.$', info: { label: 'root', root: '.$' } },
-						{ path: '.$.test', parent: '.$', name: '.test', info: null },
-						{ path: '.$.test.item', parent: '.$.test', name: '.item', info: { label: 'test' } },
-						{ path: '.$.values', parent: '.$', name: '.values', info: null },
-						{ path: '.$.values.1', parent: '.$.values', name: '.1', info: { value: true } },
-						{ path: '.$.values.2', parent: '.$.values', name: '.2', info: { value: 3.14 } },
-						{ path: '.$.values.3', parent: '.$.values', name: '.3', info: { value: 'words' } },
+						{ path: '.$', parent: '', name: '$', info: { label: 'root', root: '.$' } },
+						{ path: '.$.test', parent: '.$', name: 'test', info: null },
+						{ path: '.$.test.item', parent: '.$.test', name: 'item', info: { label: 'test' } },
+						{ path: '.$.values', parent: '.$', name: 'values', info: null },
+						{ path: '.$.values.1', parent: '.$.values', name: '1', info: { value: true } },
+						{ path: '.$.values.2', parent: '.$.values', name: '2', info: { value: 3.14 } },
+						{ path: '.$.values.3', parent: '.$.values', name: '3', info: { value: 'words' } },
 					] );
 				return;
 			} );
@@ -131,32 +131,32 @@ describe( `023 - Getall Tests`,
 				LIB_ASSERT.deepStrictEqual( items,
 					[
 						{
-							path: '.$', parent: '', name: '.$', info: { label: 'root', root: '.$' },
-							exists: true, children: [ '.test', '.values' ], resource: { label: 'root', root: '.$' },
+							path: '.$', parent: '', name: '$', info: { label: 'root', root: '.$' },
+							exists: true, children: [ 'test', 'values' ], inherited: { label: 'root', root: '.$' },
 						},
 						{
-							path: '.$.test', parent: '.$', name: '.test', info: null,
-							exists: false, children: [ '.item' ], resource: { label: 'root', root: '.$' },
+							path: '.$.test', parent: '.$', name: 'test', info: null,
+							exists: false, children: [ 'item' ], inherited: { label: 'root', root: '.$' },
 						},
 						{
-							path: '.$.test.item', parent: '.$.test', name: '.item', info: { label: 'test' },
-							exists: true, children: [], resource: { label: 'test', root: '.$' },
+							path: '.$.test.item', parent: '.$.test', name: 'item', info: { label: 'test' },
+							exists: true, children: [], inherited: { label: 'test', root: '.$' },
 						},
 						{
-							path: '.$.values', parent: '.$', name: '.values', info: null,
-							exists: false, children: [ '.1', '.2', '.3' ], resource: { label: 'root', root: '.$' },
+							path: '.$.values', parent: '.$', name: 'values', info: null,
+							exists: false, children: [ '1', '2', '3' ], inherited: { label: 'root', root: '.$' },
 						},
 						{
-							path: '.$.values.1', parent: '.$.values', name: '.1', info: { value: true },
-							exists: true, children: [], resource: { label: 'root', root: '.$', value: true },
+							path: '.$.values.1', parent: '.$.values', name: '1', info: { value: true },
+							exists: true, children: [], inherited: { label: 'root', root: '.$', value: true },
 						},
 						{
-							path: '.$.values.2', parent: '.$.values', name: '.2', info: { value: 3.14 },
-							exists: true, children: [], resource: { label: 'root', root: '.$', value: 3.14 },
+							path: '.$.values.2', parent: '.$.values', name: '2', info: { value: 3.14 },
+							exists: true, children: [], inherited: { label: 'root', root: '.$', value: 3.14 },
 						},
 						{
-							path: '.$.values.3', parent: '.$.values', name: '.3', info: { value: 'words' },
-							exists: true, children: [], resource: { label: 'root', root: '.$', value: 'words' },
+							path: '.$.values.3', parent: '.$.values', name: '3', info: { value: 'words' },
+							exists: true, children: [], inherited: { label: 'root', root: '.$', value: 'words' },
 						},
 					] );
 				return;
@@ -173,46 +173,53 @@ describe( `023 - Getall Tests`,
 				LIB_ASSERT.deepStrictEqual( items,
 					[
 						{
-							path: '.$', parent: '', name: '.$', info: { label: 'root', root: '.$' },
-							// exists: true, children: [ '.test', '.values' ], resource: { label: 'root', root: '.$' },
+							path: '', parent: '', name: '.', info: null,
+							// exists: false, children: [ '$' ], inherited: {},
 							items:
 								[
 									{
-										path: '.$.test', parent: '.$', name: '.test', info: null,
-										// exists: false, children: [ '.item' ], resource: { label: 'root', root: '.$' },
+										path: '.$', parent: '', name: '$', info: { label: 'root', root: '.$' },
+										// exists: true, children: [ 'test', 'values' ], inherited: { label: 'root', root: '.$' },
 										items:
 											[
 												{
-													path: '.$.test.item', parent: '.$.test', name: '.item', info: { label: 'test' },
-													// exists: true, children: [], resource: { label: 'test', root: '.$' },
-													items: [],
-												},
-											],
-									},
-									{
-										path: '.$.values', parent: '.$', name: '.values', info: null,
-										// exists: false, children: [ '.1', '.2', '.3' ], resource: { label: 'root', root: '.$' },
-										items:
-											[
-												{
-													path: '.$.values.1', parent: '.$.values', name: '.1', info: { value: true },
-													// exists: true, children: [], resource: { label: 'root', root: '.$', value: true },
-													items: [],
+													path: '.$.test', parent: '.$', name: 'test', info: null,
+													// exists: false, children: [ 'item' ], inherited: { label: 'root', root: '.$' },
+													items:
+														[
+															{
+																path: '.$.test.item', parent: '.$.test', name: 'item', info: { label: 'test' },
+																// exists: true, children: [], inherited: { label: 'test', root: '.$' },
+																items: [],
+															},
+														],
 												},
 												{
-													path: '.$.values.2', parent: '.$.values', name: '.2', info: { value: 3.14 },
-													// exists: true, children: [], resource: { label: 'root', root: '.$', value: 3.14 },
-													items: [],
-												},
-												{
-													path: '.$.values.3', parent: '.$.values', name: '.3', info: { value: 'words' },
-													// exists: true, children: [], resource: { label: 'root', root: '.$', value: 'words' },
-													items: [],
+													path: '.$.values', parent: '.$', name: 'values', info: null,
+													// exists: false, children: [ '1', '2', '3' ], inherited: { label: 'root', root: '.$' },
+													items:
+														[
+															{
+																path: '.$.values.1', parent: '.$.values', name: '1', info: { value: true },
+																// exists: true, children: [], inherited: { label: 'root', root: '.$', value: true },
+																items: [],
+															},
+															{
+																path: '.$.values.2', parent: '.$.values', name: '2', info: { value: 3.14 },
+																// exists: true, children: [], inherited: { label: 'root', root: '.$', value: 3.14 },
+																items: [],
+															},
+															{
+																path: '.$.values.3', parent: '.$.values', name: '3', info: { value: 'words' },
+																// exists: true, children: [], inherited: { label: 'root', root: '.$', value: 'words' },
+																items: [],
+															},
+														],
 												},
 											],
 									},
 								],
-						},
+						}
 					] );
 				return;
 			} );
@@ -228,46 +235,53 @@ describe( `023 - Getall Tests`,
 				LIB_ASSERT.deepStrictEqual( items,
 					[
 						{
-							path: '.$', parent: '', name: '.$', info: { label: 'root', root: '.$' },
-							exists: true, children: [ '.test', '.values' ], resource: { label: 'root', root: '.$' },
+							path: '', parent: '', name: '.', info: null,
+							exists: false, children: [ '$' ], inherited: {},
 							items:
 								[
 									{
-										path: '.$.test', parent: '.$', name: '.test', info: null,
-										exists: false, children: [ '.item' ], resource: { label: 'root', root: '.$' },
+										path: '.$', parent: '', name: '$', info: { label: 'root', root: '.$' },
+										exists: true, children: [ 'test', 'values' ], inherited: { label: 'root', root: '.$' },
 										items:
 											[
 												{
-													path: '.$.test.item', parent: '.$.test', name: '.item', info: { label: 'test' },
-													exists: true, children: [], resource: { label: 'test', root: '.$' },
-													items: [],
-												},
-											],
-									},
-									{
-										path: '.$.values', parent: '.$', name: '.values', info: null,
-										exists: false, children: [ '.1', '.2', '.3' ], resource: { label: 'root', root: '.$' },
-										items:
-											[
-												{
-													path: '.$.values.1', parent: '.$.values', name: '.1', info: { value: true },
-													exists: true, children: [], resource: { label: 'root', root: '.$', value: true },
-													items: [],
+													path: '.$.test', parent: '.$', name: 'test', info: null,
+													exists: false, children: [ 'item' ], inherited: { label: 'root', root: '.$' },
+													items:
+														[
+															{
+																path: '.$.test.item', parent: '.$.test', name: 'item', info: { label: 'test' },
+																exists: true, children: [], inherited: { label: 'test', root: '.$' },
+																items: [],
+															},
+														],
 												},
 												{
-													path: '.$.values.2', parent: '.$.values', name: '.2', info: { value: 3.14 },
-													exists: true, children: [], resource: { label: 'root', root: '.$', value: 3.14 },
-													items: [],
-												},
-												{
-													path: '.$.values.3', parent: '.$.values', name: '.3', info: { value: 'words' },
-													exists: true, children: [], resource: { label: 'root', root: '.$', value: 'words' },
-													items: [],
+													path: '.$.values', parent: '.$', name: 'values', info: null,
+													exists: false, children: [ '1', '2', '3' ], inherited: { label: 'root', root: '.$' },
+													items:
+														[
+															{
+																path: '.$.values.1', parent: '.$.values', name: '1', info: { value: true },
+																exists: true, children: [], inherited: { label: 'root', root: '.$', value: true },
+																items: [],
+															},
+															{
+																path: '.$.values.2', parent: '.$.values', name: '2', info: { value: 3.14 },
+																exists: true, children: [], inherited: { label: 'root', root: '.$', value: 3.14 },
+																items: [],
+															},
+															{
+																path: '.$.values.3', parent: '.$.values', name: '3', info: { value: 'words' },
+																exists: true, children: [], inherited: { label: 'root', root: '.$', value: 'words' },
+																items: [],
+															},
+														],
 												},
 											],
 									},
 								],
-						},
+						}
 					] );
 				return;
 			} );
@@ -283,19 +297,19 @@ describe( `023 - Getall Tests`,
 				LIB_ASSERT.deepStrictEqual( items,
 					{
 						'.$':
-							{ path: '.$', parent: '', name: '.$', info: { label: 'root', root: '.$' } },
+							{ path: '.$', parent: '', name: '$', info: { label: 'root', root: '.$' } },
 						// '.$.test':
-						// 	{ path: '.$.test', parent: '.$', name: '.test', info: null },
+						// 	{ path: '.$.test', parent: '.$', name: 'test', info: null },
 						'.$.test.item':
-							{ path: '.$.test.item', parent: '.$.test', name: '.item', info: { label: 'test' } },
+							{ path: '.$.test.item', parent: '.$.test', name: 'item', info: { label: 'test' } },
 						// '.$.values':
-						// 	{ path: '.$.values', parent: '.$', name: '.values', info: null },
+						// 	{ path: '.$.values', parent: '.$', name: 'values', info: null },
 						'.$.values.1':
-							{ path: '.$.values.1', parent: '.$.values', name: '.1', info: { value: true } },
+							{ path: '.$.values.1', parent: '.$.values', name: '1', info: { value: true } },
 						'.$.values.2':
-							{ path: '.$.values.2', parent: '.$.values', name: '.2', info: { value: 3.14 } },
+							{ path: '.$.values.2', parent: '.$.values', name: '2', info: { value: 3.14 } },
 						'.$.values.3':
-							{ path: '.$.values.3', parent: '.$.values', name: '.3', info: { value: 'words' } },
+							{ path: '.$.values.3', parent: '.$.values', name: '3', info: { value: 'words' } },
 					} );
 				return;
 			} );
@@ -312,38 +326,38 @@ describe( `023 - Getall Tests`,
 					{
 						'.$':
 						{
-							path: '.$', parent: '', name: '.$', info: { label: 'root', root: '.$' },
-							exists: true, children: [ '.test', '.values' ], resource: { label: 'root', root: '.$' },
+							path: '.$', parent: '', name: '$', info: { label: 'root', root: '.$' },
+							exists: true, children: [ 'test', 'values' ], inherited: { label: 'root', root: '.$' },
 						},
 						// '.$.test':
 						// {
-						// 	path: '.$.test', parent: '.$', name: '.test', info: null,
-						// 	exists: false, children: [ '.item' ], resource: { label: 'root', root: '.$' },
+						// 	path: '.$.test', parent: '.$', name: 'test', info: null,
+						// 	exists: false, children: [ 'item' ], inherited: { label: 'root', root: '.$' },
 						// },
 						'.$.test.item':
 						{
-							path: '.$.test.item', parent: '.$.test', name: '.item', info: { label: 'test' },
-							exists: true, children: [], resource: { label: 'test', root: '.$' },
+							path: '.$.test.item', parent: '.$.test', name: 'item', info: { label: 'test' },
+							exists: true, children: [], inherited: { label: 'test', root: '.$' },
 						},
 						// '.$.values':
 						// {
-						// 	path: '.$.values', parent: '.$', name: '.values', info: null,
-						// 	exists: false, children: [ '.1', '.2', '.3' ], resource: { label: 'root', root: '.$' },
+						// 	path: '.$.values', parent: '.$', name: 'values', info: null,
+						// 	exists: false, children: [ '1', '2', '3' ], inherited: { label: 'root', root: '.$' },
 						// },
 						'.$.values.1':
 						{
-							path: '.$.values.1', parent: '.$.values', name: '.1', info: { value: true },
-							exists: true, children: [], resource: { label: 'root', root: '.$', value: true },
+							path: '.$.values.1', parent: '.$.values', name: '1', info: { value: true },
+							exists: true, children: [], inherited: { label: 'root', root: '.$', value: true },
 						},
 						'.$.values.2':
 						{
-							path: '.$.values.2', parent: '.$.values', name: '.2', info: { value: 3.14 },
-							exists: true, children: [], resource: { label: 'root', root: '.$', value: 3.14 },
+							path: '.$.values.2', parent: '.$.values', name: '2', info: { value: 3.14 },
+							exists: true, children: [], inherited: { label: 'root', root: '.$', value: 3.14 },
 						},
 						'.$.values.3':
 						{
-							path: '.$.values.3', parent: '.$.values', name: '.3', info: { value: 'words' },
-							exists: true, children: [], resource: { label: 'root', root: '.$', value: 'words' },
+							path: '.$.values.3', parent: '.$.values', name: '3', info: { value: 'words' },
+							exists: true, children: [], inherited: { label: 'root', root: '.$', value: 'words' },
 						},
 					} );
 				return;
@@ -360,19 +374,19 @@ describe( `023 - Getall Tests`,
 				LIB_ASSERT.deepStrictEqual( items,
 					{
 						'.$':
-							{ path: '.$', parent: '', name: '.$', info: { label: 'root', root: '.$' } },
+							{ path: '.$', parent: '', name: '$', info: { label: 'root', root: '.$' } },
 						'.$.test':
-							{ path: '.$.test', parent: '.$', name: '.test', info: null },
+							{ path: '.$.test', parent: '.$', name: 'test', info: null },
 						'.$.test.item':
-							{ path: '.$.test.item', parent: '.$.test', name: '.item', info: { label: 'test' } },
+							{ path: '.$.test.item', parent: '.$.test', name: 'item', info: { label: 'test' } },
 						'.$.values':
-							{ path: '.$.values', parent: '.$', name: '.values', info: null },
+							{ path: '.$.values', parent: '.$', name: 'values', info: null },
 						'.$.values.1':
-							{ path: '.$.values.1', parent: '.$.values', name: '.1', info: { value: true } },
+							{ path: '.$.values.1', parent: '.$.values', name: '1', info: { value: true } },
 						'.$.values.2':
-							{ path: '.$.values.2', parent: '.$.values', name: '.2', info: { value: 3.14 } },
+							{ path: '.$.values.2', parent: '.$.values', name: '2', info: { value: 3.14 } },
 						'.$.values.3':
-							{ path: '.$.values.3', parent: '.$.values', name: '.3', info: { value: 'words' } },
+							{ path: '.$.values.3', parent: '.$.values', name: '3', info: { value: 'words' } },
 					} );
 				return;
 			} );
@@ -389,38 +403,38 @@ describe( `023 - Getall Tests`,
 					{
 						'.$':
 						{
-							path: '.$', parent: '', name: '.$', info: { label: 'root', root: '.$' },
-							exists: true, children: [ '.test', '.values' ], resource: { label: 'root', root: '.$' },
+							path: '.$', parent: '', name: '$', info: { label: 'root', root: '.$' },
+							exists: true, children: [ 'test', 'values' ], inherited: { label: 'root', root: '.$' },
 						},
 						'.$.test':
 						{
-							path: '.$.test', parent: '.$', name: '.test', info: null,
-							exists: false, children: [ '.item' ], resource: { label: 'root', root: '.$' },
+							path: '.$.test', parent: '.$', name: 'test', info: null,
+							exists: false, children: [ 'item' ], inherited: { label: 'root', root: '.$' },
 						},
 						'.$.test.item':
 						{
-							path: '.$.test.item', parent: '.$.test', name: '.item', info: { label: 'test' },
-							exists: true, children: [], resource: { label: 'test', root: '.$' },
+							path: '.$.test.item', parent: '.$.test', name: 'item', info: { label: 'test' },
+							exists: true, children: [], inherited: { label: 'test', root: '.$' },
 						},
 						'.$.values':
 						{
-							path: '.$.values', parent: '.$', name: '.values', info: null,
-							exists: false, children: [ '.1', '.2', '.3' ], resource: { label: 'root', root: '.$' },
+							path: '.$.values', parent: '.$', name: 'values', info: null,
+							exists: false, children: [ '1', '2', '3' ], inherited: { label: 'root', root: '.$' },
 						},
 						'.$.values.1':
 						{
-							path: '.$.values.1', parent: '.$.values', name: '.1', info: { value: true },
-							exists: true, children: [], resource: { label: 'root', root: '.$', value: true },
+							path: '.$.values.1', parent: '.$.values', name: '1', info: { value: true },
+							exists: true, children: [], inherited: { label: 'root', root: '.$', value: true },
 						},
 						'.$.values.2':
 						{
-							path: '.$.values.2', parent: '.$.values', name: '.2', info: { value: 3.14 },
-							exists: true, children: [], resource: { label: 'root', root: '.$', value: 3.14 },
+							path: '.$.values.2', parent: '.$.values', name: '2', info: { value: 3.14 },
+							exists: true, children: [], inherited: { label: 'root', root: '.$', value: 3.14 },
 						},
 						'.$.values.3':
 						{
-							path: '.$.values.3', parent: '.$.values', name: '.3', info: { value: 'words' },
-							exists: true, children: [], resource: { label: 'root', root: '.$', value: 'words' },
+							path: '.$.values.3', parent: '.$.values', name: '3', info: { value: 'words' },
+							exists: true, children: [], inherited: { label: 'root', root: '.$', value: 'words' },
 						},
 					} );
 				return;
@@ -436,41 +450,62 @@ describe( `023 - Getall Tests`,
 				LIB_ASSERT.ok( items );
 				LIB_ASSERT.deepStrictEqual( items,
 					{
-						'.$':
+						'.':
 						{
-							path: '.$', parent: '', name: '.$', info: { label: 'root', root: '.$' },
-							// exists: true, children: [ '.test', '.values' ], resource: { label: 'root', root: '.$' },
-							'.test':
+							path: '', parent: '', name: '.', info: null,
+							// exists: false, children: [ '$' ], inherited: {},
+							items:
 							{
-								path: '.$.test', parent: '.$', name: '.test', info: null,
-								// exists: false, children: [ '.item' ], resource: { label: 'root', root: '.$' },
-								'.item':
+								'$':
 								{
-									path: '.$.test.item', parent: '.$.test', name: '.item', info: { label: 'test' },
-									// exists: true, children: [], resource: { label: 'test', root: '.$' },
+									path: '.$', parent: '', name: '$', info: { label: 'root', root: '.$' },
+									// exists: true, children: [ 'test', 'values' ], inherited: { label: 'root', root: '.$' },
+									items:
+									{
+										'test':
+										{
+											path: '.$.test', parent: '.$', name: 'test', info: null,
+											// exists: false, children: [ 'item' ], inherited: { label: 'root', root: '.$' },
+											items:
+											{
+												'item':
+												{
+													path: '.$.test.item', parent: '.$.test', name: 'item', info: { label: 'test' },
+													// exists: true, children: [], inherited: { label: 'test', root: '.$' },
+													items: {},
+												},
+											},
+										},
+										'values':
+										{
+											path: '.$.values', parent: '.$', name: 'values', info: null,
+											// exists: false, children: [ '1', '2', '3' ], inherited: { label: 'root', root: '.$' },
+											items:
+											{
+												'1':
+												{
+													path: '.$.values.1', parent: '.$.values', name: '1', info: { value: true },
+													// exists: true, children: [], inherited: { label: 'root', root: '.$', value: true },
+													items: {},
+												},
+												'2':
+												{
+													path: '.$.values.2', parent: '.$.values', name: '2', info: { value: 3.14 },
+													// exists: true, children: [], inherited: { label: 'root', root: '.$', value: 3.14 },
+													items: {},
+												},
+												'3':
+												{
+													path: '.$.values.3', parent: '.$.values', name: '3', info: { value: 'words' },
+													// exists: true, children: [], inherited: { label: 'root', root: '.$', value: 'words' },
+													items: {},
+												},
+											},
+										},
+									},
 								},
 							},
-							'.values':
-							{
-								path: '.$.values', parent: '.$', name: '.values', info: null,
-								// exists: false, children: [ '.1', '.2', '.3' ], resource: { label: 'root', root: '.$' },
-								'.1':
-								{
-									path: '.$.values.1', parent: '.$.values', name: '.1', info: { value: true },
-									// exists: true, children: [], resource: { label: 'root', root: '.$', value: true },
-								},
-								'.2':
-								{
-									path: '.$.values.2', parent: '.$.values', name: '.2', info: { value: 3.14 },
-									// exists: true, children: [], resource: { label: 'root', root: '.$', value: 3.14 },
-								},
-								'.3':
-								{
-									path: '.$.values.3', parent: '.$.values', name: '.3', info: { value: 'words' },
-									// exists: true, children: [], resource: { label: 'root', root: '.$', value: 'words' },
-								},
-							},
-						},
+						}
 					} );
 				return;
 			} );
@@ -485,41 +520,62 @@ describe( `023 - Getall Tests`,
 				LIB_ASSERT.ok( items );
 				LIB_ASSERT.deepStrictEqual( items,
 					{
-						'.$':
+						'.':
 						{
-							path: '.$', parent: '', name: '.$', info: { label: 'root', root: '.$' },
-							exists: true, children: [ '.test', '.values' ], resource: { label: 'root', root: '.$' },
-							'.test':
+							path: '', parent: '', name: '.', info: null,
+							exists: false, children: [ '$' ], inherited: {},
+							items:
 							{
-								path: '.$.test', parent: '.$', name: '.test', info: null,
-								exists: false, children: [ '.item' ], resource: { label: 'root', root: '.$' },
-								'.item':
+								'$':
 								{
-									path: '.$.test.item', parent: '.$.test', name: '.item', info: { label: 'test' },
-									exists: true, children: [], resource: { label: 'test', root: '.$' },
+									path: '.$', parent: '', name: '$', info: { label: 'root', root: '.$' },
+									exists: true, children: [ 'test', 'values' ], inherited: { label: 'root', root: '.$' },
+									items:
+									{
+										'test':
+										{
+											path: '.$.test', parent: '.$', name: 'test', info: null,
+											exists: false, children: [ 'item' ], inherited: { label: 'root', root: '.$' },
+											items:
+											{
+												'item':
+												{
+													path: '.$.test.item', parent: '.$.test', name: 'item', info: { label: 'test' },
+													exists: true, children: [], inherited: { label: 'test', root: '.$' },
+													items: {},
+												},
+											},
+										},
+										'values':
+										{
+											path: '.$.values', parent: '.$', name: 'values', info: null,
+											exists: false, children: [ '1', '2', '3' ], inherited: { label: 'root', root: '.$' },
+											items:
+											{
+												'1':
+												{
+													path: '.$.values.1', parent: '.$.values', name: '1', info: { value: true },
+													exists: true, children: [], inherited: { label: 'root', root: '.$', value: true },
+													items: {},
+												},
+												'2':
+												{
+													path: '.$.values.2', parent: '.$.values', name: '2', info: { value: 3.14 },
+													exists: true, children: [], inherited: { label: 'root', root: '.$', value: 3.14 },
+													items: {},
+												},
+												'3':
+												{
+													path: '.$.values.3', parent: '.$.values', name: '3', info: { value: 'words' },
+													exists: true, children: [], inherited: { label: 'root', root: '.$', value: 'words' },
+													items: {},
+												},
+											},
+										},
+									},
 								},
 							},
-							'.values':
-							{
-								path: '.$.values', parent: '.$', name: '.values', info: null,
-								exists: false, children: [ '.1', '.2', '.3' ], resource: { label: 'root', root: '.$' },
-								'.1':
-								{
-									path: '.$.values.1', parent: '.$.values', name: '.1', info: { value: true },
-									exists: true, children: [], resource: { label: 'root', root: '.$', value: true },
-								},
-								'.2':
-								{
-									path: '.$.values.2', parent: '.$.values', name: '.2', info: { value: 3.14 },
-									exists: true, children: [], resource: { label: 'root', root: '.$', value: 3.14 },
-								},
-								'.3':
-								{
-									path: '.$.values.3', parent: '.$.values', name: '.3', info: { value: 'words' },
-									exists: true, children: [], resource: { label: 'root', root: '.$', value: 'words' },
-								},
-							},
-						},
+						}
 					} );
 				return;
 			} );

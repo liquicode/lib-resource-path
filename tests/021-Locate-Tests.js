@@ -32,31 +32,15 @@ describe( `021 - Locate Tests`,
 
 
 		//---------------------------------------------------------------------
-		it( `should locate all resources by default (empty path)`,
+		it( `should locate a resource`,
 			async function ()
 			{
-				let paths = LIB_RESOURCE_PATH.Locate( Resources, '' );
+				let paths = LIB_RESOURCE_PATH.Locate( Resources, 'item' );
 				LIB_ASSERT.ok( paths );
 				LIB_ASSERT.deepStrictEqual( paths,
 					[
-						".$",
 						".$.test.item",
-						".$.values.1",
-						".$.values.2",
-						".$.values.3",
-						"/test/values",
 					] );
-				return;
-			} );
-
-
-		//---------------------------------------------------------------------
-		it( `should require a name (single delimiter)`,
-			async function ()
-			{
-				let paths = LIB_RESOURCE_PATH.Locate( Resources, '.' );
-				LIB_ASSERT.ok( paths );
-				LIB_ASSERT.deepStrictEqual( paths, [] );
 				return;
 			} );
 

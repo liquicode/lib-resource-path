@@ -43,7 +43,7 @@ describe( `013 - Delete Tests`,
 			} );
 
 		//---------------------------------------------------------------------
-		it( `should remove a child resource`,
+		it( `should not remove a child resource`,
 			async function ()
 			{
 				LIB_RESOURCE_PATH.Delete( Resources, '.$.values' );
@@ -51,6 +51,9 @@ describe( `013 - Delete Tests`,
 					{
 						".$": { label: 'root', root: '.$' },
 						".$.test": { label: 'test' },
+						".$.values.1": { value: true },
+						".$.values.2": { value: 3.14 },
+						".$.values.3": { value: 'words' },
 					} );
 				return;
 			} );
