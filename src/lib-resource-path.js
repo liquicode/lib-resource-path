@@ -195,12 +195,24 @@ function Select( Resources, Path )
 
 	// Set the resource info.
 	let resource_info = Resources[ Path ];
-	if ( typeof resource_info !== 'undefined' ) 
+	if ( typeof resource_info === 'object' )
 	{
 		item.info = {};
 		item.exists = true;
-		Object.keys( resource_info ).forEach( key => item.inherited[ key ] = resource_info[ key ] );
-		Object.keys( resource_info ).forEach( key => item.info[ key ] = resource_info[ key ] );
+		if ( resource_info === null ) { }
+		else if ( Array.isArray( resource_info ) ) 
+		{
+			throw new Error( `A resource value must be an object and not [array].` );
+		}
+		else
+		{
+			Object.keys( resource_info ).forEach( key => item.inherited[ key ] = resource_info[ key ] );
+			Object.keys( resource_info ).forEach( key => item.info[ key ] = resource_info[ key ] );
+		}
+	}
+	else
+	{
+		throw new Error( `A resource value must be an object and not [${resource_info}].` );
 	}
 
 	// Get the children.
