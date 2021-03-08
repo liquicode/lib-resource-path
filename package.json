@@ -1,6 +1,6 @@
 {
 	"name": "@liquicode/lib-resource-path",
-	"version": "0.0.13",
+	"version": "0.0.14",
 	"description": "A node library for manipulating a hierarchy of resources using a resource path.",
 	"homepage": "http://lib-resource-path.liquicode.com",
 	"license": "MIT",
