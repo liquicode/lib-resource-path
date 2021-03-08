@@ -181,10 +181,22 @@ function Select( Resources, Path )
 	{
 		item.parent += path_delimiter + elements[ 0 ];
 		let resource_info = Resources[ item.parent ];
-		if ( resource_info )
+		if ( typeof resource_info === 'undefined' ) { }
+		else if ( typeof resource_info === 'object' )
 		{
-			// Copy the ancestor resource info.
-			Object.keys( resource_info ).forEach( key => item.inherited[ key ] = resource_info[ key ] );
+			if ( resource_info === null ) { }
+			else if ( Array.isArray( resource_info ) ) 
+			{
+				throw new Error( `A resource value must be an object and not [array].` );
+			}
+			else
+			{
+				Object.keys( resource_info ).forEach( key => item.inherited[ key ] = resource_info[ key ] );
+			}
+		}
+		else
+		{
+			throw new Error( `A resource value must be an object and not [${resource_info}].` );
 		}
 		elements.shift();
 	}
@@ -195,7 +207,8 @@ function Select( Resources, Path )
 
 	// Set the resource info.
 	let resource_info = Resources[ Path ];
-	if ( typeof resource_info === 'object' )
+	if ( typeof resource_info === 'undefined' ) { }
+	else if ( typeof resource_info === 'object' )
 	{
 		item.info = {};
 		item.exists = true;
