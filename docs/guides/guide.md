@@ -4,9 +4,11 @@
 
 ## Resources
 
-All function in this library require a `Resources` object as its first parameter.
-A `Resources` object stores nodes as top level sub-objects, keyed by the resource's `path`.
+All functions in this library require a `Resources` object as its first parameter.
+Each resource has a unique `path` property associated with it.
+The `Resources` object stores nodes as top level objects, keyed by the resource's `path`.
 Furthermore, the value pointed at by the resource's `path` will be the resource's actual value (i.e. the resource itself).
+So: `Resource[ resource_path ] = { hello: 'world' }`
 
 ```js
 let Resources =
@@ -16,6 +18,42 @@ let Resources =
 	".hello.world"    : { label: 'test' },
 	".koo.bar"        : { label: 'read me' },
 };
+```
+
+
+## Resource Inheritance
+
+Resources inherit resource values from its parents.
+When using the `Select` function to query for information about a resource node,
+	`Select` walks through all of a node's parent nodes and merges their resource values together
+	into a final resource for the return value.
+
+See: [Select Function](api/Select.md)
+
+Inheritance Rules:
+- If the ancestor does not have a property for the value, one is created and assigned the value.
+- If the value is a simple type (`boolean`, `number`, `string`, or `null`) then the value will be overwritten by ancestor values.
+- If the value is an `array`, the ancestors array will pushed to the end of the value.
+- If the values is an `object`, then all of its fields will be compared and inherited individually.
+
+For example:
+
+```js
+let Resources =
+{
+	// Resource Path  :  Resource Value
+	".hello"          : { label: 'hello', test_object: { value1: 1 }, test_array: [ 1, 2, 3 ] },
+	".hello.world"    : { label: 'world', test_object: { value2: 2 }, test_array: [ 4, 5, 6 ] },
+};
+
+let item = LibResourcePath.Select( Resource, '.hello.world' );
+/*
+item.resource === {
+	label: 'world',
+	test_object: { value1: 1, value2: 2 },
+	test_array: [ 1, 2, 3, 4, 5, 6 ],
+};
+*/
 ```
 
 
