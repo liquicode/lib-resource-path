@@ -30,6 +30,7 @@
     ✓ should retrieve '.$.values.1'
     ✓ should retrieve '.$.values.2'
     ✓ should retrieve '.$.values.3'
+    ✓ should merge array values
 
   021 - Locate Tests
     ✓ should locate a resource
@@ -71,7 +72,7 @@
     ✓ should rename the delimiter
 
 
-  46 passing (17ms)
+  47 passing (19ms)
 
 
 ```
