@@ -51,7 +51,7 @@ function Create( Resources, Path, Resource )
 
 	// Return the reources.
 	return Resources;
-};
+}
 
 
 //---------------------------------------------------------------------
@@ -66,7 +66,7 @@ function Create( Resources, Path, Resource )
 function Update( Resources, Path, Resource )
 {
 	return Create( Resources, Path, Resource );
-};
+}
 
 
 //---------------------------------------------------------------------
@@ -94,7 +94,7 @@ function Delete( Resources, Path )
 
 	// Return the reources.
 	return Resources;
-};
+}
 
 
 //---------------------------------------------------------------------
@@ -191,7 +191,8 @@ function Select( Resources, Path )
 			}
 			else
 			{
-				Object.keys( resource_info ).forEach( key => item.inherited[ key ] = resource_info[ key ] );
+				// Object.keys( resource_info ).forEach( key => item.inherited[ key ] = resource_info[ key ] );
+				item.inherited = merge_objects( item.inherited, resource_info );
 			}
 		}
 		else
@@ -219,7 +220,8 @@ function Select( Resources, Path )
 		}
 		else
 		{
-			Object.keys( resource_info ).forEach( key => item.inherited[ key ] = resource_info[ key ] );
+			// Object.keys( resource_info ).forEach( key => item.inherited[ key ] = resource_info[ key ] );
+			item.inherited = merge_objects( item.inherited, resource_info );
 			Object.keys( resource_info ).forEach( key => item.info[ key ] = resource_info[ key ] );
 		}
 	}
@@ -251,7 +253,68 @@ function Select( Resources, Path )
 
 	// Return the resource item.
 	return item;
+}
+
+
+//---------------------------------------------------------------------
+function clone_object( Value )
+{
+	return JSON.parse( JSON.stringify( Value ) );
 };
+
+
+//---------------------------------------------------------------------
+function merge_objects( A, B )
+{
+	let C = clone_object( A );
+
+	function update_children( ParentA, ParentB )
+	{
+		Object.keys( ParentB ).forEach(
+			key =>
+			{
+				let value_a = ParentA[ key ];
+				let value_b = ParentB[ key ];
+				let type_a = typeof value_a;
+				let type_b = typeof value_b;
+				if ( type_a === 'undefined' )
+				{
+					// Initialize with the entire value.
+					ParentA[ key ] = clone_object( value_b );
+				}
+				else
+				{
+					if ( type_b === 'object' )
+					{
+						if ( Array.isArray( value_a ) )
+						{
+							// Append the array.
+							// ParentA[ key ] = clone_object( value );
+							ParentA[ key ].push( ...clone_object( value_b ) );
+						}
+						else if ( value_b === null )
+						{
+							// Overwrite with null.
+							ParentA[ key ] = null;
+						}
+						else
+						{
+							// Merge sub-objects.
+							update_children( ParentA[ key ], value_b );
+						}
+					}
+					else
+					{
+						// Overwrite with value.
+						ParentA[ key ] = clone_object( value_b );
+					}
+				}
+			} );
+	}
+
+	update_children( C, B );
+	return C;
+}
 
 
 //---------------------------------------------------------------------
@@ -283,20 +346,6 @@ function Locate( Resources, Name )
 	paths.sort();
 
 	return paths;
-};
-
-
-//---------------------------------------------------------------------
-function path_includes( path, item_path )
-{
-	if ( path.length === 0 ) { return true; }
-	else if ( ( path.length === 1 ) && item_path.startsWith( path ) ) { return true; }
-	else
-	{
-		if ( item_path === path ) { return true; }
-		else if ( item_path.startsWith( path + path.substr( 0, 1 ) ) ) { return true; }
-	}
-	return false;
 }
 
 
@@ -325,7 +374,21 @@ function Header( Resources, Path )
 	paths.sort();
 
 	return paths;
-};
+}
+
+
+//---------------------------------------------------------------------
+function path_includes( path, item_path )
+{
+	if ( path.length === 0 ) { return true; }
+	else if ( ( path.length === 1 ) && item_path.startsWith( path ) ) { return true; }
+	else
+	{
+		if ( item_path === path ) { return true; }
+		else if ( item_path.startsWith( path + path.substr( 0, 1 ) ) ) { return true; }
+	}
+	return false;
+}
 
 
 //---------------------------------------------------------------------
@@ -570,7 +633,7 @@ function Branch( Resources, Path )
 		} );
 
 	return nodes;
-};
+}
 
 
 //---------------------------------------------------------------------
@@ -613,7 +676,7 @@ function Copyto( Resources, Path, NewPath )
 
 	// Return the reources.
 	return Resources;
-};
+}
 
 
 //---------------------------------------------------------------------
@@ -657,4 +720,4 @@ function Moveto( Resources, Path, NewPath )
 
 	// Return the reources.
 	return Resources;
-};
+}

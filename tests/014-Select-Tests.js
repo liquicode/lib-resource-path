@@ -171,4 +171,24 @@ describe( `014 - Select Tests`,
 				return;
 			} );
 
+		//---------------------------------------------------------------------
+		it( `should merge array values`,
+			async function ()
+			{
+				Resources[ '.$' ].test_array = [ 1, 2, 3 ];
+				Resources[ '.$.test' ].test_array = [ 4, 5, 6 ];
+				let resource = LIB_RESOURCE_PATH.Select( Resources, '.$.test' );
+				LIB_ASSERT.deepStrictEqual( resource,
+					{
+						path: '.$.test',
+						parent: '.$',
+						name: 'test',
+						info: { label: 'test', test_array: [ 4, 5, 6 ] },
+						exists: true,
+						inherited: { label: 'test', root: '.$', test_array: [ 1, 2, 3, 4, 5, 6 ] },
+						children: [],
+					} );
+				return;
+			} );
+
 	} );
